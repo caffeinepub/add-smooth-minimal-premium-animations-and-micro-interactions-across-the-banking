@@ -1,180 +1,233 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  /* Ultra-light premium lavender palette */
-  --background: oklch(0.99 0.005 280);
-  --foreground: oklch(0.12 0.02 280);
+@layer base {
+  :root {
+    /* Ultra-light lavender premium banking theme */
+    --background: oklch(98% 0.008 280);
+    --foreground: oklch(5% 0 0);
 
-  --card: oklch(0.98 0.008 280);
-  --card-foreground: oklch(0.12 0.02 280);
+    --card: oklch(99% 0.005 280);
+    --card-foreground: oklch(5% 0 0);
 
-  --popover: oklch(0.99 0.005 280);
-  --popover-foreground: oklch(0.12 0.02 280);
+    --popover: oklch(99.5% 0.004 280);
+    --popover-foreground: oklch(5% 0 0);
 
-  --primary: oklch(0.38 0.18 295);
-  --primary-foreground: oklch(0.99 0.005 280);
+    --primary: oklch(45% 0.18 280);
+    --primary-foreground: oklch(99% 0.005 280);
 
-  --secondary: oklch(0.94 0.025 280);
-  --secondary-foreground: oklch(0.25 0.05 280);
+    --secondary: oklch(94% 0.015 280);
+    --secondary-foreground: oklch(8% 0 0);
 
-  --muted: oklch(0.95 0.015 280);
-  --muted-foreground: oklch(0.45 0.04 280);
+    --muted: oklch(95% 0.012 280);
+    --muted-foreground: oklch(15% 0.01 280);
 
-  --accent: oklch(0.92 0.035 280);
-  --accent-foreground: oklch(0.25 0.05 280);
+    --accent: oklch(92% 0.02 280);
+    --accent-foreground: oklch(8% 0 0);
 
-  --destructive: oklch(0.55 0.22 25);
-  --destructive-foreground: oklch(0.99 0.005 280);
+    --destructive: oklch(55% 0.22 25);
+    --destructive-foreground: oklch(99% 0 0);
 
-  --border: oklch(0.88 0.025 280);
-  --input: oklch(0.88 0.025 280);
-  --ring: oklch(0.38 0.18 295);
+    --border: oklch(88% 0.02 280);
+    --input: oklch(88% 0.02 280);
+    --ring: oklch(45% 0.18 280);
 
-  --success: oklch(0.55 0.15 145);
-  --warning: oklch(0.75 0.18 75);
+    --radius: 0.75rem;
 
-  --highlight: oklch(0.72 0.12 280);
+    /* Success / Warning */
+    --success: oklch(55% 0.18 145);
+    --success-foreground: oklch(99% 0 0);
+    --warning: oklch(70% 0.18 75);
+    --warning-foreground: oklch(10% 0 0);
 
-  --radius: 0.75rem;
+    /* Chart colors */
+    --chart-1: oklch(55% 0.18 280);
+    --chart-2: oklch(60% 0.15 200);
+    --chart-3: oklch(65% 0.14 145);
+    --chart-4: oklch(70% 0.16 75);
+    --chart-5: oklch(60% 0.20 25);
 
-  /* Royal Indigo for voice/AI accents */
-  --royal-indigo: #4B0082;
-  --royal-indigo-light: rgba(75, 0, 130, 0.12);
-  --royal-indigo-glow: rgba(75, 0, 130, 0.25);
+    /* Sidebar */
+    --sidebar-background: oklch(97% 0.01 280);
+    --sidebar-foreground: oklch(8% 0 0);
+    --sidebar-primary: oklch(45% 0.18 280);
+    --sidebar-primary-foreground: oklch(99% 0 0);
+    --sidebar-accent: oklch(93% 0.018 280);
+    --sidebar-accent-foreground: oklch(8% 0 0);
+    --sidebar-border: oklch(88% 0.02 280);
+    --sidebar-ring: oklch(45% 0.18 280);
+  }
+
+  .dark {
+    --background: oklch(12% 0.02 280);
+    --foreground: oklch(97% 0.005 280);
+
+    --card: oklch(16% 0.025 280);
+    --card-foreground: oklch(97% 0.005 280);
+
+    --popover: oklch(14% 0.022 280);
+    --popover-foreground: oklch(97% 0.005 280);
+
+    --primary: oklch(65% 0.18 280);
+    --primary-foreground: oklch(10% 0.02 280);
+
+    --secondary: oklch(22% 0.03 280);
+    --secondary-foreground: oklch(95% 0.005 280);
+
+    --muted: oklch(20% 0.025 280);
+    --muted-foreground: oklch(75% 0.015 280);
+
+    --accent: oklch(24% 0.035 280);
+    --accent-foreground: oklch(95% 0.005 280);
+
+    --destructive: oklch(55% 0.22 25);
+    --destructive-foreground: oklch(99% 0 0);
+
+    --border: oklch(25% 0.03 280);
+    --input: oklch(25% 0.03 280);
+    --ring: oklch(65% 0.18 280);
+
+    --sidebar-background: oklch(14% 0.022 280);
+    --sidebar-foreground: oklch(95% 0.005 280);
+    --sidebar-primary: oklch(65% 0.18 280);
+    --sidebar-primary-foreground: oklch(10% 0.02 280);
+    --sidebar-accent: oklch(22% 0.03 280);
+    --sidebar-accent-foreground: oklch(95% 0.005 280);
+    --sidebar-border: oklch(25% 0.03 280);
+    --sidebar-ring: oklch(65% 0.18 280);
+  }
 }
 
-.dark {
-  --background: oklch(0.12 0.02 280);
-  --foreground: oklch(0.95 0.01 280);
+@layer base {
+  * {
+    @apply border-border;
+  }
 
-  --card: oklch(0.16 0.025 280);
-  --card-foreground: oklch(0.95 0.01 280);
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-  --popover: oklch(0.16 0.025 280);
-  --popover-foreground: oklch(0.95 0.01 280);
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: oklch(5% 0 0);
+    font-weight: 600;
+  }
 
-  --primary: oklch(0.72 0.12 280);
-  --primary-foreground: oklch(0.12 0.02 280);
-
-  --secondary: oklch(0.22 0.04 280);
-  --secondary-foreground: oklch(0.85 0.02 280);
-
-  --muted: oklch(0.22 0.04 280);
-  --muted-foreground: oklch(0.65 0.04 280);
-
-  --accent: oklch(0.25 0.05 280);
-  --accent-foreground: oklch(0.85 0.02 280);
-
-  --destructive: oklch(0.55 0.22 25);
-  --destructive-foreground: oklch(0.99 0.005 280);
-
-  --border: oklch(0.28 0.04 280);
-  --input: oklch(0.28 0.04 280);
-  --ring: oklch(0.72 0.12 280);
+  p, span, li, td, th, label, input, textarea, select, button {
+    color: inherit;
+  }
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+@layer utilities {
+  /* Glassmorphism utilities */
+  .glass {
+    background: oklch(99% 0.005 280 / 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid oklch(88% 0.02 280 / 0.6);
+  }
+
+  .glass-strong {
+    background: oklch(99% 0.005 280 / 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid oklch(88% 0.02 280 / 0.8);
+  }
+
+  .glass-dark {
+    background: oklch(20% 0.025 280 / 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid oklch(35% 0.04 280 / 0.5);
+  }
+
+  /* Voice assistant glow effects */
+  .voice-glow {
+    box-shadow: 0 0 20px oklch(45% 0.18 280 / 0.4), 0 0 40px oklch(45% 0.18 280 / 0.2);
+  }
+
+  .voice-active {
+    box-shadow: 0 0 30px oklch(45% 0.18 280 / 0.6), 0 0 60px oklch(45% 0.18 280 / 0.3);
+    animation: voicePulse 1.5s ease-in-out infinite;
+  }
+
+  .voice-pulse {
+    animation: voicePulse 2s ease-in-out infinite;
+  }
+
+  .indigo-glow {
+    box-shadow: 0 0 15px oklch(45% 0.18 280 / 0.35);
+    animation: indigoGlow 3s ease-in-out infinite;
+  }
+
+  /* Chat panel animation */
+  .chat-panel-enter {
+    animation: chatPanelSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Premium text utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* ============================================================
-   GLASSMORPHISM UTILITIES
-   ============================================================ */
-.glass {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(200, 200, 220, 0.4);
-}
-
-.glass-dark {
-  background: rgba(20, 15, 40, 0.75);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(100, 80, 180, 0.25);
-}
-
-/* ============================================================
-   ANIMATIONS
-   ============================================================ */
-
-/* Chatbot / Voice panel slide-down */
-@keyframes chatPanelSlideDown {
+/* Keyframe animations */
+@keyframes chatPanelSlideIn {
   from {
+    transform: translateX(100%);
     opacity: 0;
-    transform: translateY(-10px) scale(0.97);
   }
   to {
+    transform: translateX(0);
     opacity: 1;
-    transform: translateY(0) scale(1);
   }
 }
 
-/* Voice pulse animation - Royal Indigo */
 @keyframes voicePulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(75, 0, 130, 0.5), 0 0 16px rgba(75, 0, 130, 0.3);
+  0%, 100% {
+    box-shadow: 0 0 20px oklch(45% 0.18 280 / 0.4);
+    transform: scale(1);
   }
   50% {
-    box-shadow: 0 0 0 14px rgba(75, 0, 130, 0), 0 0 24px rgba(75, 0, 130, 0.4);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(75, 0, 130, 0), 0 0 16px rgba(75, 0, 130, 0.3);
+    box-shadow: 0 0 40px oklch(45% 0.18 280 / 0.7);
+    transform: scale(1.05);
   }
 }
 
-/* Royal Indigo glow for voice button */
 @keyframes indigoGlow {
   0%, 100% {
-    box-shadow: 0 0 8px rgba(75, 0, 130, 0.2), 0 0 16px rgba(75, 0, 130, 0.1);
+    box-shadow: 0 0 15px oklch(45% 0.18 280 / 0.35);
   }
   50% {
-    box-shadow: 0 0 16px rgba(75, 0, 130, 0.35), 0 0 32px rgba(75, 0, 130, 0.15);
+    box-shadow: 0 0 25px oklch(45% 0.18 280 / 0.55);
   }
 }
 
-/* Typing dots for chatbot */
 @keyframes typingDot {
   0%, 60%, 100% {
     transform: translateY(0);
     opacity: 0.4;
   }
   30% {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
     opacity: 1;
   }
 }
 
-/* Spin for loading */
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* Fade in up */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -182,107 +235,56 @@ body {
   }
 }
 
-/* Fade in */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Counter animation */
 @keyframes countUp {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Soft float */
-@keyframes softFloat {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+/* Typing indicator dots */
+.typing-dot {
+  animation: typingDot 1.4s ease-in-out infinite;
 }
 
-/* Shimmer */
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
 }
 
-/* ============================================================
-   TYPOGRAPHY
-   ============================================================ */
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Playfair Display', Georgia, serif;
-  color: #000000;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
 }
 
-p, span, li, td, th, label, input, textarea, select, button {
-  color: #111111;
-}
-
-/* ============================================================
-   SCROLLBAR
-   ============================================================ */
+/* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(200, 190, 230, 0.15);
-  border-radius: 3px;
+  background: oklch(95% 0.012 280);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(100, 80, 180, 0.25);
+  background: oklch(75% 0.06 280);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 80, 180, 0.4);
+  background: oklch(55% 0.12 280);
 }
 
-/* ============================================================
-   FOCUS STYLES
-   ============================================================ */
+/* Focus styles */
 :focus-visible {
-  outline: 2px solid rgba(75, 0, 130, 0.5);
+  outline: 2px solid oklch(45% 0.18 280);
   outline-offset: 2px;
-  border-radius: 4px;
 }
 
-/* ============================================================
-   UTILITY CLASSES
-   ============================================================ */
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease forwards;
+/* Selection */
+::selection {
+  background: oklch(45% 0.18 280 / 0.2);
+  color: oklch(5% 0 0);
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.4s ease forwards;
-}
-
-.animate-soft-float {
-  animation: softFloat 4s ease-in-out infinite;
-}
-
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-}
-
-.voice-glow {
-  animation: indigoGlow 2.5s ease-in-out infinite;
-}
-
-.voice-pulse {
-  animation: voicePulse 1.5s ease-in-out infinite;
-}
-
-/* ============================================================
-   REDUCED MOTION
-   ============================================================ */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -291,49 +293,4 @@ p, span, li, td, th, label, input, textarea, select, button {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-
-  html {
-    scroll-behavior: auto;
-  }
-}
-
-/* ============================================================
-   HIGH CONTRAST MODE
-   ============================================================ */
-@media (prefers-contrast: high) {
-  :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0 0 0);
-    --border: oklch(0 0 0);
-    --primary: oklch(0.2 0.2 295);
-  }
-}
-
-/* ============================================================
-   PREMIUM CARD STYLES
-   ============================================================ */
-.premium-card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(200, 190, 230, 0.35);
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(100, 80, 180, 0.07), 0 1px 4px rgba(0, 0, 0, 0.04);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.premium-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 40px rgba(100, 80, 180, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-/* ============================================================
-   CHATBOT PANEL SCROLLBAR
-   ============================================================ */
-.chatbot-panel-container ::-webkit-scrollbar {
-  width: 4px;
-}
-
-.chatbot-panel-container ::-webkit-scrollbar-thumb {
-  background: rgba(75, 0, 130, 0.2);
-  border-radius: 2px;
 }

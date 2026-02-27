@@ -1,115 +1,184 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Integrate AI Chatbot and Voice Assistant into DSOUZA BANK Header",
+  "title": "Remove A11y icon from header, darken all text site-wide for high-contrast readability",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Restructure the Header component's top-right section to display all five controls (Font Size Toggle, Language Selector, Accessibility Icon, AI Chatbot, Voice Assistant) in a single horizontal row with equal 16–20px gaps, consistent icon sizing, and vertical centering. Remove any standalone floating placements.",
+      "summary": "Remove the Accessibility (A11y) icon/button from the header's icon row between Language switcher and AI Chatbot, then adjust spacing and alignment of remaining controls",
       "acceptanceCriteria": [
-        "All five controls appear in the correct left-to-right order in the header's right section",
-        "Gaps between every adjacent control are equal (16–20px)",
-        "All icons and labels are vertically centered within the header bar",
-        "Icons are the same visual size across all five controls",
-        "No duplicate or floating instances of the chatbot or voice assistant exist outside the header"
+        "The A11y icon is no longer visible in the header on any viewport size.",
+        "Remaining header controls (Size, EN, DSOUZA AI, Voice) are evenly spaced and visually balanced after removal.",
+        "No broken layout, gaps, or misalignment on desktop, tablet, or mobile."
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/Header.tsx",
           "operation": "modify",
-          "description": "Restructure the top-right section to display all five controls (Font Size Toggle, Language Selector, Accessibility Icon, AI Chatbot trigger button, Voice Assistant trigger button) in a single horizontal flex row with equal 16–20px gaps between each control. Ensure all icons are vertically centered and have consistent sizing. Import and integrate inline trigger buttons for the AI Chatbot and Voice Assistant (replacing any previous floating implementations). Remove or consolidate any duplicate chatbot/voice assistant button placements elsewhere in the header."
-        },
-        {
-          "path": "frontend/src/components/FloatingChatbot.tsx",
-          "operation": "modify",
-          "description": "Remove or comment out the fixed floating action button rendering. The chatbot trigger will now be integrated directly into the Header component as an inline control. Preserve the ChatbotDialog component logic for reuse in the new header-integrated implementation."
-        },
-        {
-          "path": "frontend/src/components/Layout.tsx",
-          "operation": "modify",
-          "description": "Remove the FloatingChatbot component from the layout composition since the chatbot trigger is now integrated into the Header. Ensure the emergency security button and other layout elements remain intact."
+          "description": "Remove the AccessibilityControls component import and JSX usage from the header's controls section. The A11y dropdown currently sits between LanguageSwitcher and the DSOUZA AI chatbot trigger button. After removal, adjust the gap/spacing in the flex container holding Size, EN, DSOUZA AI, and Voice controls to maintain visual balance. Ensure responsive behavior remains intact across desktop (flex-row), tablet, and mobile (likely flex-col or wrapped) viewports."
         }
       ]
     },
     {
       "id": "REQ-2",
-      "summary": "Add an inline AI Chatbot trigger button in the header labeled 'DSOUZA AI' with a chat/bot icon. Clicking it opens a glassmorphism-styled slide-down or side panel with deep black text (#111111), multi-language support (English, Hindi, Marathi, Kannada, Tamil), adjustable font size control, and a Senior Mode toggle. The panel must close when clicked again or when clicking outside.",
+      "summary": "Make all header text labels (Size, EN, DSOUZA AI, Voice) darker and highly readable using #000000 or #1A1A1A",
       "acceptanceCriteria": [
-        "Header shows a chat/bot icon with label 'DSOUZA AI'",
-        "Clicking the button opens a glassmorphism-styled panel (backdrop-blur, frosted glass appearance)",
-        "All text inside the panel renders in #111111",
-        "Panel includes a language selector with English, Hindi, Marathi, Kannada, and Tamil options",
-        "Panel includes a font size adjustment control that resizes text within the panel",
-        "Panel includes a Senior Mode toggle that visibly increases font size and contrast when enabled",
-        "Clicking the trigger again or clicking outside the panel closes it"
+        "All text labels in the header icon/control row render in #000000 or #1A1A1A.",
+        "Labels are clearly legible against the header background at all viewport sizes.",
+        "Contrast ratio meets WCAG AA standard (minimum 4.5:1 for normal text)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/ChatbotPanel.tsx",
-          "operation": "create",
-          "description": "Create a new ChatbotPanel component that renders a slide-down or side panel with glassmorphism styling (backdrop-blur, frosted glass background with subtle border). The panel must display deep black text (#111111) and include: (1) a language selector dropdown for English, Hindi, Marathi, Kannada, and Tamil; (2) a font size adjustment control (small/medium/large buttons or slider) that dynamically resizes text within the panel; (3) a Senior Mode toggle that increases font size and contrast when enabled; (4) the core chatbot conversation interface reusing logic from ChatbotDialog. The panel must accept open/close state props and support closing when clicking outside (using a click-away listener or backdrop). Reference the generated chatbot icon at frontend/public/assets/generated/chatbot-icon-transparent.dim_64x64.png for consistency. Verify any component usage instructions before implementing."
-        },
-        {
           "path": "frontend/src/components/Header.tsx",
           "operation": "modify",
-          "description": "Add an inline AI Chatbot trigger button in the top-right controls row with a chat/bot icon and the label 'DSOUZA AI'. Manage the open/closed state of the ChatbotPanel component. Wire the trigger button click to toggle the panel's visibility. Ensure the panel closes when the trigger is clicked again or when the user clicks outside the panel (handled by the ChatbotPanel component). Position the panel relative to the header (e.g., slide down from the header or appear as a side panel anchored to the trigger)."
+          "description": "Update the text color classes for all header control labels (Size font selector button text, language switcher button text showing 'EN', DSOUZA AI button label, and Voice assistant dropdown trigger text). Replace any existing text-muted-foreground, text-gray-600, or similar light color classes with text-black (which maps to #000000) or create a custom text-[#1A1A1A] class. Apply these dark text classes to desktop and mobile nav menu item text as well to ensure consistency."
+        },
+        {
+          "path": "frontend/src/components/LanguageSwitcher.tsx",
+          "operation": "modify",
+          "description": "Update the trigger button text color to use text-black or text-[#1A1A1A] instead of any existing muted or gray variant. Ensure the language code label (EN, HI, MR, etc.) is clearly legible with high contrast against the header background."
+        },
+        {
+          "path": "frontend/src/components/VoiceAssistantDropdown.tsx",
+          "operation": "modify",
+          "description": "Update the Voice dropdown trigger button text color to use text-black or text-[#1A1A1A] for the 'Voice' label. Ensure it matches the other header controls for visual consistency and readability."
         }
       ]
     },
     {
       "id": "REQ-3",
-      "summary": "Add an inline Voice Assistant trigger button in the header with a microphone icon labeled 'Voice', displaying a subtle Royal Indigo (#4B0082) glow. When listening, show a visible pulse animation on the icon. Clicking opens a compact dropdown supporting speech-to-text and text-to-speech using the Web Speech API in the currently selected app language.",
+      "summary": "Apply high-contrast dark text colors (#000000 for primary, #1A1A1A or #222222 for secondary) across the entire website, updating global CSS custom properties and Tailwind config",
       "acceptanceCriteria": [
-        "Header shows a microphone icon with the label 'Voice'",
-        "Button has a subtle Royal Indigo glow effect in its default state",
-        "When listening, the microphone icon shows a visible CSS pulse animation",
-        "Clicking the button opens a compact dropdown panel for voice interaction",
-        "The component uses the Web Speech API for speech recognition and synthesis",
-        "Voice operations respect the currently selected app language"
+        "All page headings and subheadings render in #000000 or a near-black equivalent.",
+        "All body/paragraph text renders in #000000 or #1A1A1A.",
+        "Navigation menu items (desktop and mobile) render in high-contrast dark text.",
+        "Button labels are dark and readable (meeting WCAG AA contrast on their backgrounds).",
+        "Footer text (links, copyright, labels) is rendered in dark, high-contrast color.",
+        "No text element across Home, Services, About, Neo, or Contact pages uses a light-grey or low-contrast color that fails WCAG AA.",
+        "The soft light background of the site is preserved; only text foreground colors are darkened.",
+        "Layout and design remain elegant, minimal, and suitable for a professional banking platform.",
+        "All changes are responsive and look correct on desktop, tablet, and mobile."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/VoiceAssistantDropdown.tsx",
-          "operation": "create",
-          "description": "Create a new VoiceAssistantDropdown component that renders a compact dropdown panel for voice interaction. Integrate the Web Speech API for speech-to-text (speech recognition) and text-to-speech (speech synthesis) using logic adapted from the existing VoiceAssistant component. The dropdown must respect the currently selected app language from LanguageContext. Display a visual indicator when listening (e.g., waveform or status text). Accept open/close state props and support closing when clicking outside or after completing a voice command. Verify any component usage instructions before implementing."
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Update the CSS custom properties for foreground text colors in the :root selector. Change --foreground from its current OKLCH light value to oklch(0% 0 0) which represents pure black #000000. Update --muted-foreground to oklch(10% 0 0) for #1A1A1A equivalent. Also update --card-foreground, --popover-foreground, and any other text-related custom properties to use the same high-contrast dark values. Preserve all background color properties (--background, --card, --popover) to maintain the light premium theme. Ensure these changes apply in light mode; dark mode values can remain as-is since they already use light text on dark backgrounds."
         },
         {
-          "path": "frontend/src/components/Header.tsx",
+          "path": "frontend/tailwind.config.js",
           "operation": "modify",
-          "description": "Add an inline Voice Assistant trigger button in the top-right controls row with a microphone icon and the label 'Voice'. Apply a subtle Royal Indigo (#4B0082) glow effect using CSS (e.g., box-shadow or filter). When the voice assistant is active/listening, apply a visible CSS pulse animation to the microphone icon. Manage the open/closed state of the VoiceAssistantDropdown component. Wire the trigger button click to toggle the dropdown's visibility. Position the dropdown relative to the header (e.g., below the trigger button)."
-        }
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "summary": "Apply visual refinements across the header and both new panels: ensure all heading text is #000000, all body text is #111111 (no faded grey), add subtle hover animations (scale or opacity transition) to all five header controls, and maintain premium fintech aesthetic with breathing space.",
-      "acceptanceCriteria": [
-        "All heading text in the header and panels is #000000",
-        "All body/label text in the header and panels is #111111 with no faded grey",
-        "Each of the five header controls has a subtle hover animation (scale or opacity transition)",
-        "Header maintains breathing space and does not appear visually crowded at standard viewport widths",
-        "Overall header retains a premium, minimal fintech appearance"
-      ],
-      "file_operations": [
+          "description": "Review and update the extended color palette if any custom text color utilities are defined (e.g., colors.primary.foreground, colors.secondary.foreground). Ensure these reference the updated CSS custom properties from index.css. If the config defines specific text colors that override the custom properties, update them to #000000 for primary and #1A1A1A or #222222 for secondary text to match the global dark text strategy."
+        },
         {
-          "path": "frontend/src/components/Header.tsx",
+          "path": "frontend/src/components/Footer.tsx",
           "operation": "modify",
-          "description": "Add subtle hover animations (scale or opacity transition) to all five header controls (Font Size Toggle, Language Selector, Accessibility Icon, AI Chatbot trigger, Voice Assistant trigger). Ensure all heading text in the header is #000000 and all body/label text is #111111 with no faded grey tones. Adjust spacing and layout to maintain breathing space between elements so the header does not appear crowded at standard viewport widths. Preserve the premium fintech aesthetic with clean, minimal styling."
+          "description": "Replace any text-muted-foreground, text-gray-500, text-gray-600, or similar low-contrast text color classes on footer links, headings, copyright text, and social media labels with text-black or text-[#1A1A1A]. Ensure all footer text meets WCAG AA contrast ratio against the footer background. Maintain the existing layout and spacing; only update text color classes."
+        },
+        {
+          "path": "frontend/src/pages/HomePage.tsx",
+          "operation": "modify",
+          "description": "Scan all text elements (hero heading, subheading, feature card titles and descriptions, testimonial text, stats labels, section headings) and replace any light or muted text color classes (text-muted-foreground, text-gray-600, text-gray-500) with text-black for headings and text-[#1A1A1A] for body text. Ensure button labels within CTAs use dark text with sufficient contrast on their background colors. Preserve all layout, animations, and background styling."
+        },
+        {
+          "path": "frontend/src/pages/ServicesPage.tsx",
+          "operation": "modify",
+          "description": "Update all headings, tab labels, card titles, feature list items, and descriptive text to use text-black or text-[#1A1A1A] instead of any muted or gray variants. Ensure product card text and category labels are highly readable with WCAG AA compliant contrast. Maintain responsive tab layout and card grid structure."
+        },
+        {
+          "path": "frontend/src/pages/AboutPage.tsx",
+          "operation": "modify",
+          "description": "Replace any low-contrast text color classes in the story section, values cards, and milestones timeline with text-black for headings and text-[#1A1A1A] for body text. Ensure all narrative content is clearly legible. Preserve MotionReveal animations and responsive layout."
+        },
+        {
+          "path": "frontend/src/pages/NeoPage.tsx",
+          "operation": "modify",
+          "description": "Update hero heading, feature descriptions, life-stage capability text, and CTA button labels to use high-contrast dark text colors (text-black or text-[#1A1A1A]). Ensure marketing copy is highly readable against the page background. Maintain visual hierarchy and responsive design."
+        },
+        {
+          "path": "frontend/src/pages/ContactPage.tsx",
+          "operation": "modify",
+          "description": "Darken all text in the hero section, contact info cards (address, phone, email, hours), form labels, placeholder text (via CSS if possible), and submit button label using text-black or text-[#1A1A1A] classes. Ensure form inputs have sufficient contrast for accessibility. Preserve form validation, loading states, and toast notifications."
+        },
+        {
+          "path": "frontend/src/components/BrandStatementBanner.tsx",
+          "operation": "modify",
+          "description": "Update the brand promise heading, stats labels and values, and CTA button text to use high-contrast colors. Since this banner has a dark navy background, verify that the existing light text provides sufficient contrast; if the background is light, apply text-black. Adjust only if needed to meet WCAG AA standards. Preserve decorative blur elements and MotionReveal animation."
+        },
+        {
+          "path": "frontend/src/components/StatsRow.tsx",
+          "operation": "modify",
+          "description": "Ensure stat value numbers and labels render in text-black or text-[#1A1A1A] for maximum readability. Replace any muted or gray text classes. Maintain count-up animation and reduced-motion support."
+        },
+        {
+          "path": "frontend/src/components/TrustSecuritySection.tsx",
+          "operation": "modify",
+          "description": "Update trust card headings and descriptions to use text-black for titles and text-[#1A1A1A] for body text. Ensure all security and compliance content is clearly legible. Preserve hover animations and card layout."
+        },
+        {
+          "path": "frontend/src/components/FinancialWellbeingCard.tsx",
+          "operation": "modify",
+          "description": "Darken metric labels, values, and any descriptive text within the wellbeing tiles using text-black or text-[#1A1A1A]. Ensure color-coded icons remain visually distinct while text meets contrast standards. Maintain hover animations."
+        },
+        {
+          "path": "frontend/src/components/LoanCalculatorSection.tsx",
+          "operation": "modify",
+          "description": "Update all labels (loan amount, interest rate, term), computed result labels (monthly EMI, total payment, total interest), and values to use high-contrast dark text. Replace any muted text classes with text-black or text-[#1A1A1A]. Preserve slider interactivity and responsive layout."
+        },
+        {
+          "path": "frontend/src/components/ExperienceSelector.tsx",
+          "operation": "modify",
+          "description": "Darken card titles (Rural, Senior, Digital, Business) and any descriptive text within the experience selection cards using text-black. Ensure selected state styling maintains sufficient contrast. Preserve animated selection feedback and context updates."
+        },
+        {
+          "path": "frontend/src/components/YouthDreamBuilder.tsx",
+          "operation": "modify",
+          "description": "Update savings goal tracker labels, achievement badge text, investment step guide headings, and credit score simulator labels to use text-black or text-[#1A1A1A]. Ensure gamified content is highly readable. Maintain interactive slider functionality."
+        },
+        {
+          "path": "frontend/src/components/FamilyFinancialPlanner.tsx",
+          "operation": "modify",
+          "description": "Darken home loan tracker text, education cost calculator labels and values, tax-saving dashboard headings, and investment progress text using high-contrast colors (text-black or text-[#1A1A1A]). Ensure all financial data is clearly legible. Preserve slider interactivity and multi-widget layout."
+        },
+        {
+          "path": "frontend/src/components/SeniorSafeMode.tsx",
+          "operation": "modify",
+          "description": "Update pension/FD product card titles and descriptions, accessibility control labels, and fraud alert dialog text to use text-black or text-[#1A1A1A]. Ensure senior-focused content is highly readable. Maintain large font and high contrast toggle functionality."
+        },
+        {
+          "path": "frontend/src/components/RuralEmpowerment.tsx",
+          "operation": "modify",
+          "description": "Darken all feature card headings (low-data mode, voice banking, SMS banking, government schemes, micro-loans, crop insurance) and descriptions using text-black or text-[#1A1A1A]. Ensure rural banking content is clearly legible. Preserve adaptive layout for rural life stage context."
+        },
+        {
+          "path": "frontend/src/components/ProtectionSecurityHub.tsx",
+          "operation": "modify",
+          "description": "Update insurance product card titles, expandable content text, protection score quiz labels, and claim process step descriptions to use high-contrast dark text (text-black or text-[#1A1A1A]). Ensure all insurance and security information is highly readable. Maintain expandable card interactions."
+        },
+        {
+          "path": "frontend/src/components/FinancialHealthScore.tsx",
+          "operation": "modify",
+          "description": "Darken score labels (savings, investment, insurance, emergency fund), percentage values, and AI recommendation text using text-black or text-[#1A1A1A]. Ensure dashboard metrics are clearly legible. Preserve animated circular progress indicators."
+        },
+        {
+          "path": "frontend/src/components/ChatbotDialog.tsx",
+          "operation": "modify",
+          "description": "Update chatbot message text (user and bot), input placeholder, and any button labels to use text-black or text-[#1A1A1A] for maximum readability. Ensure message bubbles have sufficient contrast with their backgrounds. Maintain typing indicator animation and Web Speech API integration."
         },
         {
           "path": "frontend/src/components/ChatbotPanel.tsx",
           "operation": "modify",
-          "description": "Ensure all heading text within the ChatbotPanel is #000000 and all body text is #111111 (no faded grey). Apply consistent typography that aligns with the premium fintech aesthetic. Maintain adequate padding and spacing within the panel to avoid visual crowding."
+          "description": "Darken chat message text, language selector labels, font size control labels, and any system messages using text-black or text-[#1A1A1A]. Ensure multilingual conversation interface is highly readable. Preserve sliding panel animation and keyword-based bot responses."
         },
         {
-          "path": "frontend/src/components/VoiceAssistantDropdown.tsx",
+          "path": "frontend/src/components/EmergencySecurityButton.tsx",
           "operation": "modify",
-          "description": "Ensure all heading text within the VoiceAssistantDropdown is #000000 and all body text is #111111 (no faded grey). Apply consistent typography that aligns with the premium fintech aesthetic. Maintain adequate padding and spacing within the dropdown to avoid visual crowding."
+          "description": "Update button label, confirmation dialog heading, body text, and action button labels to use high-contrast dark text (text-black or text-[#1A1A1A]). Ensure emergency content is clearly legible. Maintain loading state and success toast notification."
         },
         {
-          "path": "frontend/src/index.css",
+          "path": "frontend/src/components/LifeStageToggle.tsx",
           "operation": "modify",
-          "description": "Add or update CSS utility classes for glassmorphism styling (backdrop-blur, frosted glass background with subtle border) to support the ChatbotPanel. Add or update CSS keyframes for the Royal Indigo glow effect and microphone pulse animation to support the Voice Assistant trigger button. Ensure all new styles align with the existing premium fintech design system and color tokens."
+          "description": "Darken pill button labels (Youth, Family, Senior, Rural) using text-black or ensure selected/unselected states have sufficient contrast. Maintain context updates and visual selection feedback."
         }
       ]
     }

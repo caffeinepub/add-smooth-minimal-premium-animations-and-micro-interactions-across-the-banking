@@ -1,458 +1,260 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Mic, MicOff, Volume2, X, Loader2 } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
+import { useState, useRef, useEffect } from "react";
+import { Mic, MicOff, Volume2, VolumeX, ChevronDown, X } from "lucide-react";
+import { useLanguage } from "../contexts/LanguageContext";
 import type {
   SpeechRecognitionInterface,
   SpeechRecognitionEventLocal,
   SpeechRecognitionErrorEventLocal,
-} from '@/lib/speechTypes';
+} from "../lib/speechTypes";
 
-interface VoiceAssistantDropdownProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-const LANG_CODES: Record<string, string> = {
-  en: 'en-IN',
-  hi: 'hi-IN',
-  mr: 'mr-IN',
-  kn: 'kn-IN',
-  ta: 'ta-IN',
-  te: 'te-IN',
-  bn: 'bn-IN',
+const languageCodeMap: Record<string, string> = {
+  en: "en-IN",
+  hi: "hi-IN",
+  mr: "mr-IN",
+  ta: "ta-IN",
+  te: "te-IN",
+  bn: "bn-IN",
 };
 
-const VOICE_RESPONSES: Record<string, Record<string, string>> = {
-  en: {
-    greeting: "Hello! I'm DSOUZA AI Voice Assistant. How can I help you?",
-    balance: "Your account balance is one lakh twenty four thousand five hundred rupees.",
-    loan: "We offer home loans at eight point five percent per annum. Would you like to know more?",
-    transfer: "You can transfer funds using NEFT, RTGS, or IMPS. Daily limit is ten lakhs.",
-    default: "I heard you. Our banking team is available 24 hours. Please visit your nearest branch or call our helpline.",
-  },
-  hi: {
-    greeting: "नमस्ते! मैं DSOUZA AI वॉयस असिस्टेंट हूं। आप कैसे हैं?",
-    balance: "आपके खाते में एक लाख चौबीस हजार पांच सौ रुपये हैं।",
-    loan: "हम आठ दशमलव पांच प्रतिशत पर होम लोन देते हैं।",
-    transfer: "आप NEFT, RTGS या IMPS से पैसे भेज सकते हैं।",
-    default: "मैंने आपकी बात सुनी। हमारी टीम 24 घंटे उपलब्ध है।",
-  },
-  mr: {
-    greeting: "नमस्कार! मी DSOUZA AI व्हॉइस असिस्टंट आहे.",
-    balance: "तुमच्या खात्यात एक लाख चोवीस हजार पाचशे रुपये आहेत.",
-    loan: "आम्ही आठ दशांश पाच टक्के दराने गृहकर्ज देतो.",
-    transfer: "तुम्ही NEFT, RTGS किंवा IMPS द्वारे पैसे पाठवू शकता.",
-    default: "मी तुमचे ऐकले. आमची टीम 24 तास उपलब्ध आहे.",
-  },
-  kn: {
-    greeting: "ನಮಸ್ಕಾರ! ನಾನು DSOUZA AI ವಾಯ್ಸ್ ಅಸಿಸ್ಟೆಂಟ್.",
-    balance: "ನಿಮ್ಮ ಖಾತೆಯಲ್ಲಿ ಒಂದು ಲಕ್ಷ ಇಪ್ಪತ್ತನಾಲ್ಕು ಸಾವಿರ ರೂಪಾಯಿ ಇದೆ.",
-    loan: "ನಾವು ಎಂಟು ದಶಮಾಂಶ ಐದು ಶೇಕಡಾ ದರದಲ್ಲಿ ಗೃಹ ಸಾಲ ನೀಡುತ್ತೇವೆ.",
-    transfer: "NEFT, RTGS ಅಥವಾ IMPS ಮೂಲಕ ಹಣ ವರ್ಗಾಯಿಸಬಹುದು.",
-    default: "ನಾನು ನಿಮ್ಮ ಮಾತು ಕೇಳಿದೆ. ನಮ್ಮ ತಂಡ 24 ಗಂಟೆ ಲಭ್ಯ.",
-  },
-  ta: {
-    greeting: "வணக்கம்! நான் DSOUZA AI குரல் உதவியாளர்.",
-    balance: "உங்கள் கணக்கில் ஒரு லட்சத்து இருபத்து நான்காயிரத்து ஐந்நூறு ரூபாய் உள்ளது.",
-    loan: "நாங்கள் எட்டு புள்ளி ஐந்து சதவீதத்தில் வீட்டு கடன் வழங்குகிறோம்.",
-    transfer: "NEFT, RTGS அல்லது IMPS மூலம் பணம் அனுப்பலாம்.",
-    default: "நான் உங்கள் பேச்சை கேட்டேன். எங்கள் குழு 24 மணி நேரமும் கிடைக்கிறது.",
-  },
-  te: {
-    greeting: "నమస్కారం! నేను DSOUZA AI వాయిస్ అసిస్టెంట్.",
-    balance: "మీ ఖాతాలో ఒక లక్ష ఇరవై నాలుగు వేల ఐదు వందల రూపాయలు ఉన్నాయి.",
-    loan: "మేము ఎనిమిది దశమాంశం ఐదు శాతం వడ్డీకి గృహ రుణం అందిస్తాము.",
-    transfer: "NEFT, RTGS లేదా IMPS ద్వారా నిధులు బదిలీ చేయవచ్చు.",
-    default: "నేను మీ మాట విన్నాను. మా బృందం 24 గంటలూ అందుబాటులో ఉంది.",
-  },
-  bn: {
-    greeting: "নমস্কার! আমি DSOUZA AI ভয়েস অ্যাসিস্ট্যান্ট।",
-    balance: "আপনার অ্যাকাউন্টে এক লক্ষ চব্বিশ হাজার পাঁচশো টাকা আছে।",
-    loan: "আমরা আট দশমিক পাঁচ শতাংশে হোম লোন দিই।",
-    transfer: "আপনি NEFT, RTGS বা IMPS এর মাধ্যমে অর্থ স্থানান্তর করতে পারেন।",
-    default: "আমি আপনার কথা শুনেছি। আমাদের দল 24 ঘণ্টা উপলব্ধ।",
-  },
+const greetings: Record<string, string> = {
+  en: "Hello! I'm your DSOUZA Bank voice assistant. How can I help you today?",
+  hi: "नमस्ते! मैं आपका DSOUZA बैंक वॉयस असिस्टेंट हूं। आज मैं आपकी कैसे मदद कर सकता हूं?",
+  mr: "नमस्कार! मी तुमचा DSOUZA बँक व्हॉइस असिस्टंट आहे. आज मी तुम्हाला कशी मदत करू शकतो?",
+  ta: "வணக்கம்! நான் உங்கள் DSOUZA வங்கி குரல் உதவியாளர். இன்று நான் உங்களுக்கு எப்படி உதவ முடியும்?",
+  te: "నమస్కారం! నేను మీ DSOUZA బ్యాంక్ వాయిస్ అసిస్టెంట్. ఈరోజు నేను మీకు ఎలా సహాయం చేయగలను?",
+  bn: "নমস্কার! আমি আপনার DSOUZA ব্যাংক ভয়েস অ্যাসিস্ট্যান্ট। আজ আমি আপনাকে কীভাবে সাহায্য করতে পারি?",
 };
 
-function getVoiceResponse(text: string, lang: string): string {
-  const lower = text.toLowerCase();
-  const r = VOICE_RESPONSES[lang] || VOICE_RESPONSES['en'];
-  if (
-    lower.includes('balance') ||
-    lower.includes('खाता') ||
-    lower.includes('खाते') ||
-    lower.includes('ಖಾತೆ') ||
-    lower.includes('கணக்கு')
-  )
-    return r.balance;
-  if (
-    lower.includes('loan') ||
-    lower.includes('कर्ज') ||
-    lower.includes('ಸಾಲ') ||
-    lower.includes('கடன்')
-  )
-    return r.loan;
-  if (
-    lower.includes('transfer') ||
-    lower.includes('send') ||
-    lower.includes('भेज') ||
-    lower.includes('ವರ್ಗಾ') ||
-    lower.includes('அனுப்')
-  )
-    return r.transfer;
-  return r.default;
-}
-
-type VoiceStatus = 'idle' | 'listening' | 'processing' | 'speaking';
-
-const VoiceAssistantDropdown: React.FC<VoiceAssistantDropdownProps> = ({ isOpen, onClose }) => {
-  const { language: appLanguage } = useLanguage();
-  const [status, setStatus] = useState<VoiceStatus>('idle');
-  const [transcript, setTranscript] = useState('');
-  const [response, setResponse] = useState('');
-  const [error, setError] = useState('');
+export default function VoiceAssistantDropdown() {
+  const { language } = useLanguage();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [transcript, setTranscript] = useState("");
+  const [response, setResponse] = useState("");
+  const [error, setError] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<SpeechRecognitionInterface | null>(null);
 
-  const langCode = LANG_CODES[appLanguage] || 'en-IN';
-  const shortLang = appLanguage || 'en';
+  const hasSpeechRecognition =
+    typeof window !== "undefined" &&
+    ("SpeechRecognition" in window || "webkitSpeechRecognition" in window);
 
-  const speak = useCallback(
-    (text: string) => {
-      if (!window.speechSynthesis) return;
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = langCode;
-      utterance.rate = 0.9;
-      utterance.pitch = 1;
-      setStatus('speaking');
-      utterance.onend = () => setStatus('idle');
-      utterance.onerror = () => setStatus('idle');
-      window.speechSynthesis.speak(utterance);
-    },
-    [langCode]
-  );
-
-  const stopListening = useCallback(() => {
-    if (recognitionRef.current) {
-      recognitionRef.current.abort();
-      recognitionRef.current = null;
-    }
-    setStatus('idle');
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const startListening = useCallback(() => {
-    setError('');
-    setTranscript('');
-    setResponse('');
-
-    const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognitionCtor) {
-      setError('Speech recognition not supported in this browser.');
+  const startListening = () => {
+    if (!hasSpeechRecognition) {
+      setError("Speech recognition not supported in this browser.");
       return;
     }
+    setError("");
+    setTranscript("");
+    setResponse("");
 
-    const recognition = new SpeechRecognitionCtor();
-    recognition.lang = langCode;
+    const SpeechRecognitionCtor =
+      (window as Window & typeof globalThis).SpeechRecognition ||
+      (window as Window & typeof globalThis).webkitSpeechRecognition;
+
+    const recognition: SpeechRecognitionInterface = new SpeechRecognitionCtor();
+    recognition.lang = languageCodeMap[language] || "en-IN";
     recognition.interimResults = false;
     recognition.continuous = false;
-    recognitionRef.current = recognition;
 
-    recognition.onstart = () => setStatus('listening');
-
-    recognition.onresult = (event: SpeechRecognitionEventLocal) => {
-      const text = event.results[0][0].transcript;
+    recognition.onstart = () => setIsListening(true);
+    recognition.onend = () => setIsListening(false);
+    recognition.onerror = (e: SpeechRecognitionErrorEventLocal) => {
+      setIsListening(false);
+      setError(`Error: ${e.error}`);
+    };
+    recognition.onresult = (e: SpeechRecognitionEventLocal) => {
+      const text = e.results[0][0].transcript;
       setTranscript(text);
-      setStatus('processing');
-      setTimeout(() => {
-        const reply = getVoiceResponse(text, shortLang);
-        setResponse(reply);
-        speak(reply);
-      }, 500);
+      generateResponse(text);
     };
 
-    recognition.onerror = (event: SpeechRecognitionErrorEventLocal) => {
-      if (event.error !== 'aborted') {
-        setError('Could not understand. Please try again.');
-      }
-      setStatus('idle');
-    };
-
-    recognition.onend = () => {
-      setStatus(prev => (prev === 'listening' ? 'idle' : prev));
-    };
-
+    recognitionRef.current = recognition;
     recognition.start();
-  }, [langCode, shortLang, speak]);
-
-  const handleMicClick = () => {
-    if (status === 'listening') {
-      stopListening();
-    } else if (status === 'speaking') {
-      window.speechSynthesis?.cancel();
-      setStatus('idle');
-    } else {
-      startListening();
-    }
   };
 
-  // Close on outside click
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleClick = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        onClose();
-      }
-    };
-    document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
-  }, [isOpen, onClose]);
+  const stopListening = () => {
+    recognitionRef.current?.stop();
+    setIsListening(false);
+  };
 
-  // Cleanup on close
-  useEffect(() => {
-    if (!isOpen) {
-      stopListening();
-      window.speechSynthesis?.cancel();
-      setStatus('idle');
-      setTranscript('');
-      setResponse('');
-      setError('');
+  const generateResponse = (text: string) => {
+    const lower = text.toLowerCase();
+    let reply = greetings[language] || greetings.en;
+
+    if (lower.includes("balance") || lower.includes("account")) {
+      reply =
+        language === "hi"
+          ? "आपका खाता शेष देखने के लिए कृपया नेट बैंकिंग में लॉगिन करें।"
+          : "To check your account balance, please log in to net banking or visit your nearest branch.";
+    } else if (lower.includes("loan") || lower.includes("emi")) {
+      reply =
+        language === "hi"
+          ? "हमारे लोन उत्पादों के बारे में जानने के लिए सेवाएं पेज देखें।"
+          : "Explore our loan products on the Services page. We offer home, personal, and business loans at competitive rates.";
+    } else if (lower.includes("branch") || lower.includes("location")) {
+      reply =
+        language === "hi"
+          ? "हमारी शाखाएं पूरे भारत में हैं। संपर्क पेज पर जाएं।"
+          : "We have branches across India. Visit our Contact page for the nearest branch location.";
+    } else if (lower.includes("help") || lower.includes("support")) {
+      reply =
+        language === "hi"
+          ? "हमारी सहायता टीम 24/7 उपलब्ध है। 1800-XXX-XXXX पर कॉल करें।"
+          : "Our support team is available 24/7. Call us at 1800-XXX-XXXX or use the DSOUZA AI chatbot.";
     }
-  }, [isOpen, stopListening]);
 
-  if (!isOpen) return null;
+    setResponse(reply);
+    speakResponse(reply);
+  };
 
-  const statusLabel: Record<VoiceStatus, string> = {
-    idle: 'Tap mic to speak',
-    listening: 'Listening...',
-    processing: 'Processing...',
-    speaking: 'Speaking...',
+  const speakResponse = (text: string) => {
+    if (!("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = languageCodeMap[language] || "en-IN";
+    utterance.rate = 0.9;
+    utterance.pitch = 1;
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const stopSpeaking = () => {
+    window.speechSynthesis?.cancel();
+    setIsSpeaking(false);
   };
 
   return (
-    <div
-      ref={dropdownRef}
-      style={{
-        position: 'absolute',
-        top: 'calc(100% + 8px)',
-        right: 0,
-        width: '300px',
-        zIndex: 9999,
-        borderRadius: '16px',
-        overflow: 'hidden',
-        background: 'rgba(255,255,255,0.85)',
-        backdropFilter: 'blur(24px) saturate(180%)',
-        WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-        border: '1px solid rgba(200,200,220,0.45)',
-        boxShadow: '0 8px 40px rgba(75,0,130,0.12), 0 2px 8px rgba(0,0,0,0.07)',
-        animation: 'chatPanelSlideDown 0.22s cubic-bezier(0.16,1,0.3,1)',
-      }}
-    >
-      {/* Header */}
-      <div
-        style={{
-          padding: '12px 16px',
-          borderBottom: '1px solid rgba(200,200,220,0.25)',
-          background: 'rgba(255,255,255,0.6)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
+    <div className="relative" ref={dropdownRef}>
+      {/* Trigger Button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`flex items-center gap-1.5 px-2.5 py-2 rounded-xl border transition-all duration-200 text-xs font-bold ${
+          isOpen || isListening
+            ? "bg-lavender-100 border-lavender-400 text-[#000000] voice-glow"
+            : "bg-lavender-50 border-lavender-200/60 text-[#000000] hover:bg-lavender-100 hover:text-[#000000]"
+        }`}
+        aria-label="Voice Assistant"
+        title="Voice Assistant"
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div
-            style={{
-              width: '28px',
-              height: '28px',
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, rgba(75,0,130,0.15), rgba(100,20,160,0.2))',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 0 10px rgba(75,0,130,0.25)',
-            }}
-          >
-            <Mic size={14} color="#4B0082" />
-          </div>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: '13px', color: '#000000' }}>Voice Assistant</div>
-            <div style={{ fontSize: '11px', color: '#111111', opacity: 0.65 }}>
-              DSOUZA AI · {appLanguage?.toUpperCase() || 'EN'}
+        <Mic className={`w-3.5 h-3.5 ${isListening ? "text-lavender-600 voice-pulse" : "text-[#1A1A1A]"}`} />
+        <span className="text-[#000000] font-bold">Voice</span>
+        <ChevronDown className={`w-3 h-3 text-[#1A1A1A] transition-transform ${isOpen ? "rotate-180" : ""}`} />
+      </button>
+
+      {/* Dropdown Panel */}
+      {isOpen && (
+        <div className="absolute right-0 top-full mt-2 w-72 glass-strong rounded-2xl shadow-soft-lg border border-lavender-200/60 z-50 overflow-hidden">
+          {/* Header */}
+          <div className="flex items-center justify-between px-4 py-3 border-b border-lavender-200/40 bg-lavender-50/60">
+            <div className="flex items-center gap-2">
+              <div className={`w-2 h-2 rounded-full ${isListening ? "bg-red-500 animate-pulse" : isSpeaking ? "bg-green-500 animate-pulse" : "bg-lavender-400"}`} />
+              <span className="text-xs font-bold text-[#000000]">Voice Assistant</span>
             </div>
-          </div>
-        </div>
-        <button
-          onClick={onClose}
-          style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            padding: '4px',
-            borderRadius: '6px',
-            color: '#111111',
-            display: 'flex',
-            alignItems: 'center',
-            transition: 'background 0.15s',
-          }}
-          onMouseEnter={e => ((e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.07)')}
-          onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background = 'none')}
-          aria-label="Close voice assistant"
-        >
-          <X size={15} />
-        </button>
-      </div>
-
-      {/* Main area */}
-      <div
-        style={{
-          padding: '20px 16px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '14px',
-        }}
-      >
-        {/* Mic button */}
-        <button
-          onClick={handleMicClick}
-          style={{
-            width: '64px',
-            height: '64px',
-            borderRadius: '50%',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background:
-              status === 'listening'
-                ? 'linear-gradient(135deg, #4B0082, #6A0DAD)'
-                : status === 'speaking'
-                ? 'linear-gradient(135deg, #1a6b3c, #2d9e5f)'
-                : 'rgba(255,255,255,0.9)',
-            boxShadow:
-              status === 'listening'
-                ? '0 0 0 0 rgba(75,0,130,0.4)'
-                : '0 0 16px rgba(75,0,130,0.2), 0 2px 8px rgba(0,0,0,0.1)',
-            transition: 'all 0.2s',
-            animation: status === 'listening' ? 'voicePulse 1.5s ease-in-out infinite' : 'none',
-          }}
-          aria-label={status === 'listening' ? 'Stop listening' : 'Start listening'}
-        >
-          {status === 'processing' ? (
-            <Loader2 size={26} color="#4B0082" style={{ animation: 'spin 1s linear infinite' }} />
-          ) : status === 'speaking' ? (
-            <Volume2 size={26} color="#ffffff" />
-          ) : status === 'listening' ? (
-            <MicOff size={26} color="#ffffff" />
-          ) : (
-            <Mic size={26} color="#4B0082" />
-          )}
-        </button>
-
-        {/* Status */}
-        <div
-          style={{
-            fontSize: '13px',
-            fontWeight: 600,
-            color:
-              status === 'listening' ? '#4B0082' : status === 'speaking' ? '#1a6b3c' : '#111111',
-            letterSpacing: '0.02em',
-          }}
-        >
-          {statusLabel[status]}
-        </div>
-
-        {/* Transcript */}
-        {transcript && (
-          <div
-            style={{
-              width: '100%',
-              padding: '10px 12px',
-              borderRadius: '10px',
-              background: 'rgba(75,0,130,0.06)',
-              border: '1px solid rgba(75,0,130,0.15)',
-              fontSize: '13px',
-              color: '#111111',
-              lineHeight: 1.5,
-            }}
-          >
-            <span
-              style={{
-                fontSize: '11px',
-                fontWeight: 600,
-                color: '#4B0082',
-                display: 'block',
-                marginBottom: '4px',
-              }}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-1 rounded-lg hover:bg-lavender-100 text-[#1A1A1A] hover:text-[#000000] transition-colors"
             >
-              You said:
-            </span>
-            {transcript}
+              <X className="w-3.5 h-3.5" />
+            </button>
           </div>
-        )}
 
-        {/* Response */}
-        {response && (
-          <div
-            style={{
-              width: '100%',
-              padding: '10px 12px',
-              borderRadius: '10px',
-              background: 'rgba(255,255,255,0.8)',
-              border: '1px solid rgba(200,200,220,0.35)',
-              fontSize: '13px',
-              color: '#111111',
-              lineHeight: 1.5,
-            }}
-          >
-            <span
-              style={{
-                fontSize: '11px',
-                fontWeight: 600,
-                color: '#000000',
-                display: 'block',
-                marginBottom: '4px',
-              }}
-            >
-              DSOUZA AI:
-            </span>
-            {response}
+          {/* Content */}
+          <div className="p-4 space-y-3">
+            {/* Controls */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={isListening ? stopListening : startListening}
+                disabled={!hasSpeechRecognition}
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 ${
+                  isListening
+                    ? "bg-red-50 border border-red-200 text-red-700 hover:bg-red-100"
+                    : "bg-lavender-600 text-white hover:bg-lavender-700 shadow-soft hover:shadow-glow"
+                } disabled:opacity-50 disabled:cursor-not-allowed`}
+              >
+                {isListening ? (
+                  <>
+                    <MicOff className="w-3.5 h-3.5" />
+                    <span>Stop</span>
+                  </>
+                ) : (
+                  <>
+                    <Mic className="w-3.5 h-3.5" />
+                    <span>Speak</span>
+                  </>
+                )}
+              </button>
+
+              {isSpeaking && (
+                <button
+                  onClick={stopSpeaking}
+                  className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold hover:bg-amber-100 transition-colors"
+                >
+                  <VolumeX className="w-3.5 h-3.5" />
+                </button>
+              )}
+              {!isSpeaking && response && (
+                <button
+                  onClick={() => speakResponse(response)}
+                  className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-green-50 border border-green-200 text-green-700 text-xs font-bold hover:bg-green-100 transition-colors"
+                >
+                  <Volume2 className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            {/* Status */}
+            {isListening && (
+              <div className="flex items-center gap-2 px-3 py-2 bg-red-50 rounded-xl border border-red-100">
+                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <span className="text-xs font-medium text-red-700">Listening...</span>
+              </div>
+            )}
+
+            {/* Transcript */}
+            {transcript && (
+              <div className="px-3 py-2 bg-lavender-50 rounded-xl border border-lavender-200/60">
+                <p className="text-[10px] font-semibold text-[#1A1A1A] mb-1">You said:</p>
+                <p className="text-xs text-[#000000] font-medium">{transcript}</p>
+              </div>
+            )}
+
+            {/* Response */}
+            {response && (
+              <div className="px-3 py-2 bg-white rounded-xl border border-lavender-200/60 shadow-soft">
+                <p className="text-[10px] font-semibold text-[#1A1A1A] mb-1">Response:</p>
+                <p className="text-xs text-[#000000] leading-relaxed">{response}</p>
+              </div>
+            )}
+
+            {/* Error */}
+            {error && (
+              <div className="px-3 py-2 bg-red-50 rounded-xl border border-red-100">
+                <p className="text-xs text-red-700 font-medium">{error}</p>
+              </div>
+            )}
+
+            {/* Hint */}
+            {!transcript && !response && !isListening && (
+              <p className="text-[10px] text-[#333333] text-center font-medium">
+                Tap "Speak" and ask about accounts, loans, branches, or support.
+              </p>
+            )}
           </div>
-        )}
-
-        {/* Error */}
-        {error && (
-          <div
-            style={{
-              width: '100%',
-              padding: '8px 12px',
-              borderRadius: '8px',
-              background: 'rgba(220,50,50,0.07)',
-              border: '1px solid rgba(220,50,50,0.2)',
-              fontSize: '12px',
-              color: '#c0392b',
-            }}
-          >
-            {error}
-          </div>
-        )}
-
-        {/* Hint */}
-        <div
-          style={{
-            fontSize: '11px',
-            color: '#111111',
-            opacity: 0.55,
-            textAlign: 'center',
-            lineHeight: 1.4,
-          }}
-        >
-          Try: "Check balance", "Apply for loan", "Transfer funds"
         </div>
-      </div>
+      )}
     </div>
   );
-};
-
-export default VoiceAssistantDropdown;
+}

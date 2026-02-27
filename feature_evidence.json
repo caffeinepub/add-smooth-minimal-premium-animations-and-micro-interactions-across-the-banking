@@ -2,12 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-restructure-the-top-right-section-of-the-header-component-frontend-src-components-header-tsx-to-display-all-five-controls-in-a-single-horizontal-row-with-16-20px-equal-gaps-vertically-centered-and-consistent-icon-sizing-the-order-must-be-font-size-toggle-language-selector-accessibility-icon-ai-chatbot-voice-assistant-remove-any-existing-standalone-floating-placements-of-the-chatbot-or-voice-assistant-from-the-header-area-and-consolidate-them-here",
-      "featureTitle": "Restructure the top-right section of the Header component (frontend/src/components/Header.tsx) to display all five controls in a single horizontal row with 16–20px equal gaps, vertically centered, and consistent icon sizing. The order must be: [ Font Size Toggle ] [ Language Selector ] [ Accessibility Icon ] [ AI Chatbot ] [ Voice Assistant ]. Remove any existing standalone floating placements of the chatbot or voice assistant from the header area and consolidate them here.",
+      "featureId": "feature-remove-the-accessibility-a11y-icon-button-from-the-header-s-icon-row-the-one-positioned-between-the-language-en-switcher-and-the-ai-chatbot-dsouza-ai-icon-after-removal-adjust-spacing-and-alignment-of-the-remaining-header-controls-size-en-dsouza-ai-voice-so-the-layout-is-clean-symmetrical-and-professionally-aligned-on-desktop-tablet-and-mobile",
+      "featureTitle": "Remove the Accessibility (A11y) icon/button from the header's icon row — the one positioned between the Language (EN) switcher and the AI Chatbot (DSOUZA AI) icon. After removal, adjust spacing and alignment of the remaining header controls (Size, EN, DSOUZA AI, Voice) so the layout is clean, symmetrical, and professionally aligned on desktop, tablet, and mobile.",
       "files": [
-        "frontend/src/components/FloatingChatbot.tsx",
-        "frontend/src/components/Header.tsx",
-        "frontend/src/components/Layout.tsx"
+        "frontend/src/components/Header.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -23,11 +21,12 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-add-or-update-an-inline-ai-chatbot-trigger-button-in-the-header-labeled-dsouza-ai-with-a-small-chat-bot-icon-and-the-text-label-beneath-or-beside-it-when-clicked-open-a-slide-down-or-side-panel-using-glassmorphism-styling-frosted-glass-background-subtle-border-backdrop-blur-the-panel-must-use-deep-black-readable-text-111111-support-language-selection-among-english-hindi-marathi-kannada-and-tamil-include-an-adjustable-font-size-control-inside-the-panel-and-include-a-senior-mode-toggle-that-enlarges-text-and-increases-contrast-within-the-panel-the-panel-must-close-when-the-trigger-is-clicked-again-or-when-clicking-outside",
-      "featureTitle": "Add or update an inline AI Chatbot trigger button in the header labeled 'DSOUZA AI' with a small chat/bot icon and the text label beneath or beside it. When clicked, open a slide-down or side panel using glassmorphism styling (frosted glass background, subtle border, backdrop blur). The panel must use deep black readable text (#111111), support language selection among English, Hindi, Marathi, Kannada, and Tamil, include an adjustable font size control inside the panel, and include a Senior Mode toggle that enlarges text and increases contrast within the panel. The panel must close when the trigger is clicked again or when clicking outside.",
+      "featureId": "feature-make-all-header-text-labels-size-en-dsouza-ai-and-voice-darker-and-highly-readable-apply-a-dark-color-of-000000-or-1a1a1a-so-they-stand-out-clearly-against-the-light-header-background",
+      "featureTitle": "Make all header text labels — Size, EN, DSOUZA AI, and Voice — darker and highly readable. Apply a dark color of #000000 or #1A1A1A so they stand out clearly against the light header background.",
       "files": [
-        "frontend/src/components/ChatbotPanel.tsx",
-        "frontend/src/components/Header.tsx"
+        "frontend/src/components/Header.tsx",
+        "frontend/src/components/LanguageSwitcher.tsx",
+        "frontend/src/components/VoiceAssistantDropdown.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -43,11 +42,18 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-add-or-update-an-inline-voice-assistant-trigger-button-in-the-header-showing-a-microphone-icon-with-the-label-voice-the-button-must-display-a-subtle-royal-indigo-4b0082-or-equivalent-glow-when-the-voice-assistant-is-active-listening-apply-a-visible-pulse-animation-to-the-microphone-icon-clicking-the-button-opens-a-compact-dropdown-for-voice-interaction-that-supports-speech-to-text-capturing-user-speech-and-text-to-speech-reading-responses-aloud-using-the-web-speech-api-operating-in-the-currently-selected-app-language",
-      "featureTitle": "Add or update an inline Voice Assistant trigger button in the header showing a microphone icon with the label 'Voice'. The button must display a subtle Royal Indigo (#4B0082 or equivalent) glow. When the voice assistant is active (listening), apply a visible pulse animation to the microphone icon. Clicking the button opens a compact dropdown for voice interaction that supports speech-to-text (capturing user speech) and text-to-speech (reading responses aloud) using the Web Speech API, operating in the currently selected app language.",
+      "featureId": "feature-apply-high-contrast-dark-text-colors-across-the-entire-website-use-000000-for-primary-text-and-1a1a1a-or-222222-for-secondary-text-this-applies-to-all-headings-h1-h6-subheadings-navigation-menu-items-body-text-button-labels-card-text-form-labels-and-footer-text-update-global-css-custom-properties-and-or-tailwind-config-to-enforce-these-values-site-wide-maintain-the-light-premium-background-only-darken-foreground-text",
+      "featureTitle": "Apply high-contrast dark text colors across the entire website. Use #000000 for primary text and #1A1A1A or #222222 for secondary text. This applies to all headings (h1–h6), subheadings, navigation menu items, body text, button labels, card text, form labels, and footer text. Update global CSS custom properties and/or Tailwind config to enforce these values site-wide. Maintain the light, premium background; only darken foreground text.",
       "files": [
-        "frontend/src/components/Header.tsx",
-        "frontend/src/components/VoiceAssistantDropdown.tsx"
+        "frontend/src/components/Footer.tsx",
+        "frontend/src/components/StatsRow.tsx",
+        "frontend/src/index.css",
+        "frontend/src/pages/AboutPage.tsx",
+        "frontend/src/pages/ContactPage.tsx",
+        "frontend/src/pages/HomePage.tsx",
+        "frontend/src/pages/NeoPage.tsx",
+        "frontend/src/pages/ServicesPage.tsx",
+        "frontend/tailwind.config.js"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -59,28 +65,6 @@
       ],
       "testIds": [
         "REQ-3"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-apply-visual-refinements-across-the-header-and-both-new-panels-ensure-all-heading-text-is-000000-all-body-text-is-111111-no-faded-grey-text-add-subtle-hover-animations-e-g-scale-or-opacity-transition-to-all-five-header-controls-and-maintain-a-premium-fintech-aesthetic-with-breathing-space-between-elements-so-the-header-does-not-appear-crowded",
-      "featureTitle": "Apply visual refinements across the header and both new panels: ensure all heading text is #000000, all body text is #111111 (no faded grey text), add subtle hover animations (e.g., scale or opacity transition) to all five header controls, and maintain a premium fintech aesthetic with breathing space between elements so the header does not appear crowded.",
-      "files": [
-        "frontend/src/components/ChatbotPanel.tsx",
-        "frontend/src/components/Header.tsx",
-        "frontend/src/components/VoiceAssistantDropdown.tsx",
-        "frontend/src/index.css"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "blob-storage@4.0.0"
-      ],
-      "testIds": [
-        "REQ-4"
       ],
       "confidence": "high"
     }

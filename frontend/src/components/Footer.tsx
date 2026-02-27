@@ -1,124 +1,121 @@
-import React from 'react';
-import { useNavigate } from '@tanstack/react-router';
-import { MapPin, Phone, Mail, Sparkles, Heart, ArrowRight } from 'lucide-react';
-import { SiFacebook, SiX, SiInstagram, SiLinkedin, SiYoutube } from 'react-icons/si';
+import { useNavigate } from "@tanstack/react-router";
+import { Building2, Phone, Mail, MapPin, Shield, Heart } from "lucide-react";
+import { SiFacebook, SiX, SiInstagram, SiLinkedin, SiYoutube } from "react-icons/si";
 
-const Footer: React.FC = () => {
+const footerLinks = {
+  services: [
+    { label: "Savings Account", path: "/services" },
+    { label: "Home Loans", path: "/services" },
+    { label: "Personal Loans", path: "/services" },
+    { label: "Business Banking", path: "/services" },
+    { label: "Investment Plans", path: "/services" },
+    { label: "Insurance", path: "/services" },
+  ],
+  company: [
+    { label: "About Us", path: "/about" },
+    { label: "NEO Banking", path: "/neo" },
+    { label: "Careers", path: "/about" },
+    { label: "Press & Media", path: "/about" },
+    { label: "Investor Relations", path: "/about" },
+    { label: "CSR Initiatives", path: "/about" },
+  ],
+  support: [
+    { label: "Help Center", path: "/contact" },
+    { label: "Contact Us", path: "/contact" },
+    { label: "Branch Locator", path: "/contact" },
+    { label: "ATM Finder", path: "/contact" },
+    { label: "Grievance Redressal", path: "/contact" },
+    { label: "Fraud Reporting", path: "/contact" },
+  ],
+};
+
+const socialLinks = [
+  { icon: SiFacebook, label: "Facebook", href: "#" },
+  { icon: SiX, label: "X (Twitter)", href: "#" },
+  { icon: SiInstagram, label: "Instagram", href: "#" },
+  { icon: SiLinkedin, label: "LinkedIn", href: "#" },
+  { icon: SiYoutube, label: "YouTube", href: "#" },
+];
+
+export default function Footer() {
   const navigate = useNavigate();
-  const year = new Date().getFullYear();
-  const hostname = typeof window !== 'undefined' ? encodeURIComponent(window.location.hostname) : 'dsouza-bank';
-
-  const quickLinks = [
-    { label: 'Home', path: '/' },
-    { label: 'Services', path: '/services' },
-    { label: 'NEO Banking', path: '/neo' },
-    { label: 'About Us', path: '/about' },
-    { label: 'Contact', path: '/contact' },
-  ];
-
-  const services = [
-    'Savings Accounts',
-    'Home Loans',
-    'Personal Loans',
-    'Business Banking',
-    'Investment Plans',
-    'Insurance',
-  ];
-
-  const socialLinks = [
-    { icon: SiFacebook, label: 'Facebook', href: '#' },
-    { icon: SiX, label: 'X (Twitter)', href: '#' },
-    { icon: SiInstagram, label: 'Instagram', href: '#' },
-    { icon: SiLinkedin, label: 'LinkedIn', href: '#' },
-    { icon: SiYoutube, label: 'YouTube', href: '#' },
-  ];
+  const appId = encodeURIComponent(
+    typeof window !== "undefined" ? window.location.hostname : "dsouza-bank"
+  );
 
   return (
-    <footer
-      style={{
-        backgroundColor: 'var(--secondary)',
-        color: 'var(--secondary-foreground)',
-      }}
-    >
-      {/* Main Footer */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+    <footer className="bg-lavender-50 border-t border-lavender-200/60 mt-auto">
+      {/* Main Footer Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand Column */}
-          <div className="lg:col-span-1">
-            <div className="flex items-center gap-3 mb-5">
-              <div
-                className="w-10 h-10 rounded-2xl flex items-center justify-center"
-                style={{
-                  background: 'linear-gradient(135deg, var(--primary), var(--accent))',
-                  boxShadow: '0 2px 12px oklch(76% 0.12 270 / 0.3)',
-                }}
-              >
-                <Sparkles className="w-5 h-5" style={{ color: 'oklch(15% 0.005 270)' }} />
+          <div className="lg:col-span-2 space-y-5">
+            <button
+              onClick={() => navigate({ to: "/" })}
+              className="flex items-center gap-2.5 group"
+              aria-label="DSOUZA Bank Home"
+            >
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-lavender-600 to-lavender-800 flex items-center justify-center shadow-soft group-hover:shadow-glow transition-all duration-300">
+                <Building2 className="w-5 h-5 text-white" />
               </div>
-              <div>
-                <div className="font-bold text-base tracking-tight" style={{ color: 'oklch(99% 0.004 270)' }}>
-                  DSouza Bank
-                </div>
-                <div className="text-xs" style={{ color: 'oklch(88% 0.04 270)' }}>
-                  Life-Based Banking
-                </div>
+              <div className="flex flex-col leading-none">
+                <span className="font-display font-bold text-lg text-[#000000] tracking-tight">
+                  DSOUZA
+                </span>
+                <span className="text-[10px] font-semibold text-[#1A1A1A] tracking-widest uppercase">
+                  Bank
+                </span>
+              </div>
+            </button>
+
+            <p className="text-sm text-[#1A1A1A] leading-relaxed max-w-xs font-medium">
+              Life-Based Banking — personalized financial solutions for every stage of your journey.
+              Trusted by millions across India.
+            </p>
+
+            {/* Contact Info */}
+            <div className="space-y-2.5">
+              <div className="flex items-center gap-2.5 text-sm text-[#1A1A1A]">
+                <Phone className="w-4 h-4 text-lavender-600 flex-shrink-0" />
+                <span className="font-medium">1800-XXX-XXXX (Toll Free)</span>
+              </div>
+              <div className="flex items-center gap-2.5 text-sm text-[#1A1A1A]">
+                <Mail className="w-4 h-4 text-lavender-600 flex-shrink-0" />
+                <span className="font-medium">support@dsouzabank.in</span>
+              </div>
+              <div className="flex items-start gap-2.5 text-sm text-[#1A1A1A]">
+                <MapPin className="w-4 h-4 text-lavender-600 flex-shrink-0 mt-0.5" />
+                <span className="font-medium">DSOUZA Bank HQ, Mumbai, Maharashtra 400001</span>
               </div>
             </div>
-            <p className="text-sm leading-relaxed mb-6" style={{ color: 'oklch(88% 0.04 270)' }}>
-              Banking that grows with you — from your first job to retirement. Trusted by millions across India.
-            </p>
-            {/* Social Icons */}
-            <div className="flex items-center gap-2">
+
+            {/* Social Links */}
+            <div className="flex items-center gap-2.5">
               {socialLinks.map(({ icon: Icon, label, href }) => (
                 <a
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200"
-                  style={{
-                    backgroundColor: 'oklch(99% 0.004 270 / 0.1)',
-                    color: 'oklch(88% 0.04 270)',
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'var(--accent)';
-                    (e.currentTarget as HTMLAnchorElement).style.color = 'oklch(15% 0.005 270)';
-                    (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(-2px)';
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'oklch(99% 0.004 270 / 0.1)';
-                    (e.currentTarget as HTMLAnchorElement).style.color = 'oklch(88% 0.04 270)';
-                    (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(0)';
-                  }}
+                  className="w-8 h-8 rounded-lg bg-lavender-100 border border-lavender-200/60 flex items-center justify-center text-[#1A1A1A] hover:bg-lavender-600 hover:text-white hover:border-lavender-600 transition-all duration-200"
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className="w-3.5 h-3.5" />
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Services Links */}
           <div>
-            <h4
-              className="text-xs font-semibold uppercase tracking-widest mb-5"
-              style={{ color: 'var(--accent)', letterSpacing: '0.15em' }}
-            >
-              Quick Links
-            </h4>
-            <ul className="space-y-3">
-              {quickLinks.map((link) => (
-                <li key={link.path}>
+            <h3 className="font-display font-bold text-sm text-[#000000] uppercase tracking-wider mb-4">
+              Services
+            </h3>
+            <ul className="space-y-2.5">
+              {footerLinks.services.map((link) => (
+                <li key={link.label}>
                   <button
                     onClick={() => navigate({ to: link.path })}
-                    className="text-sm flex items-center gap-2 group transition-all duration-200"
-                    style={{ color: 'oklch(88% 0.04 270)' }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.color = 'var(--accent)';
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.color = 'oklch(88% 0.04 270)';
-                    }}
+                    className="text-sm text-[#1A1A1A] hover:text-[#000000] font-medium transition-colors duration-200 text-left"
                   >
-                    <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                     {link.label}
                   </button>
                 </li>
@@ -126,112 +123,83 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Company Links */}
           <div>
-            <h4
-              className="text-xs font-semibold uppercase tracking-widest mb-5"
-              style={{ color: 'var(--accent)', letterSpacing: '0.15em' }}
-            >
-              Our Services
-            </h4>
-            <ul className="space-y-3">
-              {services.map((service) => (
-                <li key={service}>
-                  <span
-                    className="text-sm transition-colors duration-200 cursor-default"
-                    style={{ color: 'oklch(88% 0.04 270)' }}
+            <h3 className="font-display font-bold text-sm text-[#000000] uppercase tracking-wider mb-4">
+              Company
+            </h3>
+            <ul className="space-y-2.5">
+              {footerLinks.company.map((link) => (
+                <li key={link.label}>
+                  <button
+                    onClick={() => navigate({ to: link.path })}
+                    className="text-sm text-[#1A1A1A] hover:text-[#000000] font-medium transition-colors duration-200 text-left"
                   >
-                    {service}
-                  </span>
+                    {link.label}
+                  </button>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Support Links */}
           <div>
-            <h4
-              className="text-xs font-semibold uppercase tracking-widest mb-5"
-              style={{ color: 'var(--accent)', letterSpacing: '0.15em' }}
-            >
-              Contact Us
-            </h4>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <div
-                  className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
-                  style={{ backgroundColor: 'oklch(99% 0.004 270 / 0.1)' }}
-                >
-                  <MapPin className="w-4 h-4" style={{ color: 'var(--accent)' }} />
-                </div>
-                <span className="text-sm leading-relaxed" style={{ color: 'oklch(88% 0.04 270)' }}>
-                  123 Banking Street, Mumbai, Maharashtra 400001
-                </span>
-              </li>
-              <li className="flex items-center gap-3">
-                <div
-                  className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ backgroundColor: 'oklch(99% 0.004 270 / 0.1)' }}
-                >
-                  <Phone className="w-4 h-4" style={{ color: 'var(--accent)' }} />
-                </div>
-                <a
-                  href="tel:+911800123456"
-                  className="text-sm transition-colors duration-200"
-                  style={{ color: 'oklch(88% 0.04 270)' }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = 'var(--accent)'; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = 'oklch(88% 0.04 270)'; }}
-                >
-                  1800-123-4567 (Toll Free)
-                </a>
-              </li>
-              <li className="flex items-center gap-3">
-                <div
-                  className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ backgroundColor: 'oklch(99% 0.004 270 / 0.1)' }}
-                >
-                  <Mail className="w-4 h-4" style={{ color: 'var(--accent)' }} />
-                </div>
-                <a
-                  href="mailto:support@dsouzabank.com"
-                  className="text-sm transition-colors duration-200"
-                  style={{ color: 'oklch(88% 0.04 270)' }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = 'var(--accent)'; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = 'oklch(88% 0.04 270)'; }}
-                >
-                  support@dsouzabank.com
-                </a>
-              </li>
+            <h3 className="font-display font-bold text-sm text-[#000000] uppercase tracking-wider mb-4">
+              Support
+            </h3>
+            <ul className="space-y-2.5">
+              {footerLinks.support.map((link) => (
+                <li key={link.label}>
+                  <button
+                    onClick={() => navigate({ to: link.path })}
+                    className="text-sm text-[#1A1A1A] hover:text-[#000000] font-medium transition-colors duration-200 text-left"
+                  >
+                    {link.label}
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
       </div>
 
-      {/* Bottom Bar */}
-      <div
-        className="border-t"
-        style={{ borderColor: 'oklch(99% 0.004 270 / 0.12)' }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+      {/* Compliance Bar */}
+      <div className="border-t border-lavender-200/60 bg-lavender-100/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p className="text-xs" style={{ color: 'oklch(80% 0.04 270)' }}>
-              © {year} DSouza Bank. All rights reserved. | RBI Regulated | DICGC Insured
+            <div className="flex items-center gap-2 text-xs text-[#1A1A1A] font-medium">
+              <Shield className="w-3.5 h-3.5 text-lavender-600" />
+              <span>Regulated by RBI | DICGC Insured | ISO 27001 Certified</span>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-3 text-xs text-[#1A1A1A] font-medium">
+              <button className="hover:text-[#000000] transition-colors">Privacy Policy</button>
+              <span className="text-lavender-300">•</span>
+              <button className="hover:text-[#000000] transition-colors">Terms of Service</button>
+              <span className="text-lavender-300">•</span>
+              <button className="hover:text-[#000000] transition-colors">Cookie Policy</button>
+              <span className="text-lavender-300">•</span>
+              <button className="hover:text-[#000000] transition-colors">Accessibility</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="border-t border-lavender-200/40 bg-lavender-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-[#1A1A1A] font-medium">
+            <p>
+              © {new Date().getFullYear()} DSOUZA Bank. All rights reserved.
             </p>
-            <p className="text-xs flex items-center gap-1.5" style={{ color: 'oklch(80% 0.04 270)' }}>
-              Built with{' '}
-              <Heart
-                className="w-3 h-3 fill-current"
-                style={{ color: 'var(--accent)' }}
-              />{' '}
-              using{' '}
+            <p className="flex items-center gap-1">
+              Built with{" "}
+              <Heart className="w-3 h-3 text-lavender-600 fill-lavender-600" />{" "}
+              using{" "}
               <a
-                href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${hostname}`}
+                href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${appId}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium transition-colors duration-200"
-                style={{ color: 'var(--accent)' }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = 'var(--highlight)'; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = 'var(--accent)'; }}
+                className="text-lavender-700 hover:text-lavender-900 font-semibold transition-colors"
               >
                 caffeine.ai
               </a>
@@ -241,6 +209,4 @@ const Footer: React.FC = () => {
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

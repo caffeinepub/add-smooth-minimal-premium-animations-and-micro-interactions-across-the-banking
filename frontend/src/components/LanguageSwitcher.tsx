@@ -1,53 +1,49 @@
-import { Globe } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useLanguage } from "../contexts/LanguageContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useLanguage, Language } from '@/contexts/LanguageContext';
+} from "@/components/ui/dropdown-menu";
+import { Globe, ChevronDown } from "lucide-react";
 
-const languages: { code: Language; name: string; nativeName: string }[] = [
-  { code: 'en', name: 'English', nativeName: 'English' },
-  { code: 'hi', name: 'Hindi', nativeName: 'हिंदी' },
-  { code: 'mr', name: 'Marathi', nativeName: 'मराठी' },
-  { code: 'ta', name: 'Tamil', nativeName: 'தமிழ்' },
-  { code: 'te', name: 'Telugu', nativeName: 'తెలుగు' },
-  { code: 'bn', name: 'Bengali', nativeName: 'বাংলা' },
+const languages = [
+  { code: "en", label: "English", native: "English" },
+  { code: "hi", label: "Hindi", native: "हिंदी" },
+  { code: "mr", label: "Marathi", native: "मराठी" },
+  { code: "ta", label: "Tamil", native: "தமிழ்" },
+  { code: "te", label: "Telugu", native: "తెలుగు" },
+  { code: "bn", label: "Bengali", native: "বাংলা" },
 ];
 
 export default function LanguageSwitcher() {
-  const { language, setLanguage, t } = useLanguage();
+  const { language, setLanguage } = useLanguage();
 
-  const currentLanguage = languages.find((lang) => lang.code === language);
+  const currentLang = languages.find((l) => l.code === language) || languages[0];
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="gap-2 text-sm font-medium"
+        <button
+          className="flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-lavender-50 border border-lavender-200/60 text-[#000000] hover:bg-lavender-100 hover:text-[#000000] transition-all duration-200 text-xs font-bold"
           aria-label="Select language"
         >
-          <Globe className="h-4 w-4" />
-          <span className="hidden sm:inline">{currentLanguage?.nativeName}</span>
-        </Button>
+          <Globe className="w-3.5 h-3.5 text-[#1A1A1A]" />
+          <span className="text-[#000000] font-bold">{currentLang.code.toUpperCase()}</span>
+          <ChevronDown className="w-3 h-3 text-[#1A1A1A]" />
+        </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
+      <DropdownMenuContent align="end" className="w-44 bg-white/95 backdrop-blur-md border-lavender-200/60 shadow-soft-md">
         {languages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
-            onClick={() => setLanguage(lang.code)}
-            className={`cursor-pointer ${
-              language === lang.code ? 'bg-accent text-accent-foreground' : ''
+            onClick={() => setLanguage(lang.code as "en" | "hi" | "mr" | "ta" | "te" | "bn")}
+            className={`flex items-center justify-between cursor-pointer text-[#1A1A1A] hover:text-[#000000] ${
+              language === lang.code ? "bg-lavender-50 font-semibold text-[#000000]" : ""
             }`}
           >
-            <span className="font-medium">{lang.nativeName}</span>
-            {language === lang.code && (
-              <span className="ml-auto text-xs">✓</span>
-            )}
+            <span className="text-sm font-medium text-[#1A1A1A]">{lang.native}</span>
+            <span className="text-xs text-[#333333] font-medium">{lang.code.toUpperCase()}</span>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

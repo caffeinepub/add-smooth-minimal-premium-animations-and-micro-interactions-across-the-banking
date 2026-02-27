@@ -1,262 +1,296 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { useNavigate } from '@tanstack/react-router';
-import { Smartphone, Zap, Lock, TrendingUp, Target, Sparkles, CheckCircle2 } from 'lucide-react';
-import { MotionReveal } from '@/components/motion/MotionReveal';
-import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { useNavigate } from "@tanstack/react-router";
+import { Smartphone, Brain, Mic, BarChart3, Shield, Zap, ArrowRight, Check } from "lucide-react";
+import MotionReveal from "../components/motion/MotionReveal";
+import { useLifeStage } from "../contexts/LifeStageContext";
+import type { LifeStage } from "../contexts/LifeStageContext";
+import YouthDreamBuilder from "../components/YouthDreamBuilder";
+import FamilyFinancialPlanner from "../components/FamilyFinancialPlanner";
+import SeniorSafeMode from "../components/SeniorSafeMode";
+import RuralEmpowerment from "../components/RuralEmpowerment";
+import ProtectionSecurityHub from "../components/ProtectionSecurityHub";
+
+const features = [
+  {
+    icon: Brain,
+    title: "AI Financial Advisor",
+    description: "Get personalized investment advice, spending insights, and financial planning powered by advanced AI.",
+    color: "text-lavender-700",
+    bg: "bg-lavender-50",
+  },
+  {
+    icon: Mic,
+    title: "Voice Banking",
+    description: "Perform transactions, check balances, and get support using natural voice commands in 6 Indian languages.",
+    color: "text-blue-700",
+    bg: "bg-blue-50",
+  },
+  {
+    icon: BarChart3,
+    title: "Smart Analytics",
+    description: "Visual spending breakdowns, savings goals tracker, and predictive cash flow analysis.",
+    color: "text-emerald-700",
+    bg: "bg-emerald-50",
+  },
+  {
+    icon: Shield,
+    title: "Advanced Security",
+    description: "Biometric authentication, behavioral analytics, and real-time fraud detection with instant alerts.",
+    color: "text-red-700",
+    bg: "bg-red-50",
+  },
+  {
+    icon: Zap,
+    title: "Instant Everything",
+    description: "Instant account opening, instant loans, instant transfers — banking at the speed of life.",
+    color: "text-amber-700",
+    bg: "bg-amber-50",
+  },
+  {
+    icon: Smartphone,
+    title: "Unified Dashboard",
+    description: "All your accounts, investments, loans, and insurance in one beautifully designed dashboard.",
+    color: "text-purple-700",
+    bg: "bg-purple-50",
+  },
+];
+
+type NonNullLifeStage = Exclude<LifeStage, null>;
+
+const lifeStageCapabilities: Record<NonNullLifeStage, { title: string; items: string[] }> = {
+  youth: {
+    title: "Built for the Digital Generation",
+    items: [
+      "Gamified savings goals with rewards",
+      "Credit score builder program",
+      "Student loan management",
+      "Investment starter packs from ₹100",
+      "Peer payment splitting",
+      "Career-linked financial planning",
+    ],
+  },
+  family: {
+    title: "Complete Family Financial Hub",
+    items: [
+      "Joint account management",
+      "Children's education fund tracker",
+      "Home loan EMI optimizer",
+      "Family insurance dashboard",
+      "Tax planning for dual income",
+      "Emergency fund calculator",
+    ],
+  },
+  senior: {
+    title: "Safe & Simple Senior Banking",
+    items: [
+      "Large text and high contrast mode",
+      "Pension and FD management",
+      "Simplified transaction interface",
+      "Family account monitoring",
+      "Fraud protection alerts",
+      "Voice-guided navigation",
+    ],
+  },
+  rural: {
+    title: "Empowering Rural India",
+    items: [
+      "Works on 2G/3G networks",
+      "SMS banking for feature phones",
+      "Government scheme integration",
+      "Crop insurance management",
+      "Micro-loan applications",
+      "Regional language support",
+    ],
+  },
+};
 
 export default function NeoPage() {
   const navigate = useNavigate();
-  const prefersReducedMotion = usePrefersReducedMotion();
-
-  const features = [
-    {
-      icon: Target,
-      title: 'Life Stage Insights',
-      description: 'Personalized financial insights and recommendations based on your current life stage.',
-    },
-    {
-      icon: Zap,
-      title: 'Instant Everything',
-      description: 'Instant transfers, real-time notifications, and immediate access to your money.',
-    },
-    {
-      icon: Lock,
-      title: 'Advanced Security',
-      description: 'Biometric authentication and AI-powered fraud detection keep your money safe.',
-    },
-    {
-      icon: Sparkles,
-      title: 'Smart Automation',
-      description: 'Automated savings, bill pay, and budgeting tools that work in the background.',
-    },
-  ];
-
-  const lifeStageFeatures = [
-    {
-      stage: 'Student Life',
-      features: ['Budget tracking for student expenses', 'Student loan management', 'Part-time income tracking', 'Financial literacy modules'],
-    },
-    {
-      stage: 'First Job',
-      features: ['Career milestone tracking', 'Emergency fund builder', 'First home savings goals', 'Credit score monitoring'],
-    },
-    {
-      stage: 'Family Planning',
-      features: ['Family budget management', 'Education savings tracker', 'Joint account features', 'Family goal planning'],
-    },
-    {
-      stage: 'Business Growth',
-      features: ['Business expense tracking', 'Cash flow forecasting', 'Invoice management', 'Growth analytics'],
-    },
-    {
-      stage: 'Retirement',
-      features: ['Retirement income planning', 'Investment portfolio tracking', 'Estate planning tools', 'Healthcare expense management'],
-    },
-  ];
+  const { lifeStage } = useLifeStage();
+  const activeStage: NonNullLifeStage = lifeStage ?? "youth";
+  const capabilities = lifeStageCapabilities[activeStage];
 
   return (
-    <div className="flex flex-col">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-teal via-primary to-copper">
-        <div className="absolute inset-0 bg-[url('/assets/generated/digital-banking-illustration.dim_600x400.png')] bg-cover bg-center opacity-5" />
-        <div className="container relative mx-auto px-4 py-24 md:py-32">
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-            <div className="flex flex-col justify-center text-primary-foreground">
-              <img
-                src="/assets/generated/neo-logo-life-based.dim_250x100.png"
-                alt="NEO"
-                className="mb-6 h-20 w-auto"
-              />
-              <h1 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl">
-                Life-Based Banking in Your Pocket
-              </h1>
-              <p className="mb-8 text-lg opacity-90 md:text-xl">
-                NEO brings DSOUZA BANK's revolutionary Life-Based Banking approach to your smartphone. Experience personalized financial management that adapts to your life stage and goals.
-              </p>
-              <div className="flex flex-col gap-4 sm:flex-row">
-                <Button
-                  size="lg"
-                  variant="secondary"
-                  onClick={() => navigate({ to: '/contact' })}
-                  className="premium-button text-base font-semibold"
-                >
-                  Get Started
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={() => navigate({ to: '/services' })}
-                  className="border-primary-foreground/30 bg-primary-foreground/10 text-primary-foreground hover:bg-primary-foreground/20 premium-button text-base font-semibold"
-                >
-                  Explore Services
-                </Button>
+    <main className="min-h-screen bg-gradient-to-b from-lavender-50 to-white">
+      {/* Hero */}
+      <section className="relative py-20 bg-gradient-to-br from-lavender-900 via-lavender-800 to-lavender-700 overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <img
+            src="/assets/generated/hero-premium-background.dim_2400x1200.png"
+            alt=""
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <MotionReveal>
+              <div className="space-y-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/20 border border-white/30 rounded-full text-xs font-bold text-white">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                  Next-Gen Digital Banking
+                </div>
+                <img
+                  src="/assets/generated/neo-logo-life-based.dim_250x100.png"
+                  alt="NEO by DSOUZA Bank"
+                  className="h-12 object-contain"
+                />
+                <h1 className="font-display text-4xl sm:text-5xl font-bold text-white leading-tight">
+                  The Future of
+                  <span className="block text-lavender-200">Banking is Here</span>
+                </h1>
+                <p className="text-lg text-lavender-100 leading-relaxed font-medium">
+                  NEO combines AI intelligence, voice banking, and life-stage personalization to deliver a banking experience unlike anything you've seen before.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={() => navigate({ to: "/services" })}
+                    className="flex items-center justify-center gap-2 px-6 py-3 bg-white text-lavender-800 rounded-xl font-bold text-sm hover:bg-lavender-50 shadow-soft transition-all duration-200"
+                  >
+                    Get Started
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => navigate({ to: "/contact" })}
+                    className="flex items-center justify-center gap-2 px-6 py-3 bg-white/10 border border-white/30 text-white rounded-xl font-bold text-sm hover:bg-white/20 transition-all duration-200"
+                  >
+                    Learn More
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center justify-center">
+            </MotionReveal>
+
+            <MotionReveal delay={200}>
               <div className="relative">
                 <img
                   src="/assets/generated/mobile-app-mockup.dim_400x600.png"
                   alt="NEO Mobile App"
-                  className="relative z-10 h-auto w-full max-w-sm rounded-3xl shadow-2xl transition-transform duration-slower ease-premium hover:scale-105"
+                  className="w-full max-w-xs mx-auto drop-shadow-2xl"
                 />
-                {!prefersReducedMotion && (
-                  <div className="absolute -inset-4 -z-10 animate-pulse rounded-3xl bg-gradient-to-br from-copper/30 to-teal/30 blur-2xl" />
-                )}
               </div>
-            </div>
+            </MotionReveal>
           </div>
         </div>
       </section>
 
-      {/* About NEO */}
-      <MotionReveal delay={100}>
-        <section className="py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <div className="mx-auto max-w-3xl text-center">
-              <h2 className="mb-6 text-3xl font-bold tracking-tight md:text-4xl">
-                What is NEO?
+      {/* Features Grid */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <MotionReveal>
+            <div className="text-center mb-12">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#000000] mb-4">
+                Powered by Intelligence
               </h2>
-              <p className="mb-6 text-lg text-muted-foreground">
-                NEO is DSOUZA BANK's digital-first subsidiary, launched in 2020 and reimagined in 2024 to deliver Life-Based Banking through mobile technology. NEO understands your life stage and provides personalized financial tools, insights, and support exactly when you need them.
-              </p>
-              <p className="text-lg text-muted-foreground">
-                As part of the DSOUZA BANK family, NEO combines cutting-edge fintech innovation with the trust and stability of a established financial institution. You get modern digital banking backed by 40 years of banking expertise.
+              <p className="text-[#1A1A1A] max-w-2xl mx-auto font-medium">
+                Every feature in NEO is designed to make your financial life simpler, smarter, and more secure.
               </p>
             </div>
+          </MotionReveal>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature, i) => (
+              <MotionReveal key={feature.title} delay={i * 80}>
+                <div className="group p-6 bg-white rounded-2xl border border-lavender-200/60 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300">
+                  <div className={`w-12 h-12 ${feature.bg} rounded-xl flex items-center justify-center mb-4`}>
+                    <feature.icon className={`w-6 h-6 ${feature.color}`} />
+                  </div>
+                  <h3 className="font-display font-bold text-base text-[#000000] mb-2">{feature.title}</h3>
+                  <p className="text-sm text-[#1A1A1A] leading-relaxed font-medium">{feature.description}</p>
+                </div>
+              </MotionReveal>
+            ))}
           </div>
-        </section>
-      </MotionReveal>
+        </div>
+      </section>
 
-      {/* Key Features */}
-      <MotionReveal delay={100}>
-        <section className="bg-muted/30 py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <div className="mb-12 text-center">
-              <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">
-                Why Choose NEO?
-              </h2>
-              <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-                Digital banking designed around your life, not the other way around.
-              </p>
-            </div>
-
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-              {features.map((feature, index) => (
-                <Card key={index} className="border-border/50 premium-card">
-                  <CardHeader>
-                    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-teal/20 to-teal/10">
-                      <feature.icon className="h-6 w-6 text-teal" />
-                    </div>
-                    <CardTitle className="text-xl">{feature.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base">{feature.description}</CardDescription>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-      </MotionReveal>
-
-      {/* Life Stage Features */}
-      <MotionReveal delay={100}>
-        <section className="py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <div className="mb-12 text-center">
-              <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">
-                Features for Every Life Stage
-              </h2>
-              <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-                NEO adapts to your life stage, providing the tools and insights you need right now.
-              </p>
-            </div>
-
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {lifeStageFeatures.map((item, index) => (
-                <Card key={index} className="border-border/50 premium-card">
-                  <CardHeader>
-                    <CardTitle className="text-xl">{item.stage}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2">
-                      {item.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-start text-sm">
-                          <CheckCircle2 className="mr-2 mt-0.5 h-4 w-4 flex-shrink-0 text-teal" />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-      </MotionReveal>
-
-      {/* Relationship with DSOUZA BANK */}
-      <MotionReveal delay={100}>
-        <section className="bg-muted/30 py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <div className="mx-auto max-w-4xl">
-              <h2 className="mb-8 text-center text-3xl font-bold tracking-tight md:text-4xl">
-                NEO & DSOUZA BANK: One Family
-              </h2>
-              <div className="grid gap-6 md:grid-cols-2">
-                {[
-                  {
-                    title: 'Seamless Integration',
-                    description: 'Your NEO account is fully integrated with DSOUZA BANK. Access branches, ATMs, and all traditional banking services while enjoying digital convenience.',
-                  },
-                  {
-                    title: 'Trusted Security',
-                    description: 'NEO is backed by DSOUZA BANK\'s 40 years of banking expertise and robust security infrastructure. Innovation meets trust.',
-                  },
-                  {
-                    title: 'Expert Support',
-                    description: 'Get instant support through NEO\'s in-app chat or visit any DSOUZA BANK branch for personalized advice from life-stage specialists.',
-                  },
-                  {
-                    title: 'Best of Both Worlds',
-                    description: 'Use NEO for daily digital banking and DSOUZA BANK for comprehensive financial planning. Choose what works for you.',
-                  },
-                ].map((item, index) => (
-                  <Card key={index} className="border-border/50 premium-card">
-                    <CardContent className="p-8">
-                      <h3 className="mb-4 text-xl font-bold">{item.title}</h3>
-                      <p className="text-base text-muted-foreground">{item.description}</p>
-                    </CardContent>
-                  </Card>
-                ))}
+      {/* Life Stage Capabilities */}
+      <section className="py-16 bg-lavender-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <MotionReveal>
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#000000] mb-4">
+                  {capabilities.title}
+                </h2>
+                <p className="text-[#1A1A1A] mb-6 font-medium">
+                  NEO adapts to your life stage, offering features and tools that matter most to you right now.
+                </p>
+                <ul className="space-y-3">
+                  {capabilities.items.map((item) => (
+                    <li key={item} className="flex items-center gap-3">
+                      <div className="w-5 h-5 rounded-full bg-lavender-100 border border-lavender-300 flex items-center justify-center flex-shrink-0">
+                        <Check className="w-3 h-3 text-lavender-700" />
+                      </div>
+                      <span className="text-sm text-[#1A1A1A] font-semibold">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="relative">
+                <img
+                  src="/assets/generated/mobile-features-illustration.dim_500x400.png"
+                  alt="NEO Features"
+                  className="w-full rounded-2xl shadow-soft-xl"
+                />
               </div>
             </div>
-          </div>
-        </section>
+          </MotionReveal>
+        </div>
+      </section>
+
+      {/* Life Stage Specific Components */}
+      {lifeStage === "youth" && (
+        <MotionReveal>
+          <YouthDreamBuilder />
+        </MotionReveal>
+      )}
+      {lifeStage === "family" && (
+        <MotionReveal>
+          <FamilyFinancialPlanner />
+        </MotionReveal>
+      )}
+      {lifeStage === "senior" && (
+        <MotionReveal>
+          <SeniorSafeMode />
+        </MotionReveal>
+      )}
+      {lifeStage === "rural" && (
+        <MotionReveal>
+          <RuralEmpowerment />
+        </MotionReveal>
+      )}
+
+      {/* Protection Hub */}
+      <MotionReveal>
+        <ProtectionSecurityHub />
       </MotionReveal>
 
-      {/* CTA Section */}
-      <MotionReveal delay={100}>
-        <section className="bg-gradient-to-br from-primary to-teal py-16 text-primary-foreground md:py-20">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">
+      {/* CTA */}
+      <section className="py-20 bg-gradient-to-br from-lavender-800 to-lavender-900">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <MotionReveal>
+            <h2 className="font-display text-3xl sm:text-4xl font-bold text-white mb-4">
               Ready to Experience NEO?
             </h2>
-            <p className="mb-8 text-lg opacity-90">
-              Join thousands who've discovered Life-Based Banking on their smartphones.
+            <p className="text-lavender-200 mb-8 text-lg font-medium">
+              Join millions of Indians who have already upgraded to smarter banking.
             </p>
-            <Button
-              size="lg"
-              variant="secondary"
-              onClick={() => navigate({ to: '/contact' })}
-              className="premium-button text-base font-semibold"
-            >
-              Contact Us Today
-            </Button>
-          </div>
-        </section>
-      </MotionReveal>
-    </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                onClick={() => navigate({ to: "/services" })}
+                className="flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-lavender-800 rounded-xl font-bold hover:bg-lavender-50 shadow-soft transition-all duration-200"
+              >
+                Open NEO Account
+                <ArrowRight className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => navigate({ to: "/contact" })}
+                className="flex items-center justify-center gap-2 px-8 py-3.5 bg-white/10 border border-white/30 text-white rounded-xl font-bold hover:bg-white/20 transition-all duration-200"
+              >
+                Talk to an Expert
+              </button>
+            </div>
+          </MotionReveal>
+        </div>
+      </section>
+    </main>
   );
 }

@@ -1,236 +1,252 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { GraduationCap, Briefcase, Heart, TrendingUp, Home, CheckCircle2 } from 'lucide-react';
-import { MotionReveal } from '@/components/motion/MotionReveal';
+import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import {
+  CreditCard, Home, Briefcase, TrendingUp, Shield, Smartphone,
+  ArrowRight, Check, Star, Landmark, PiggyBank, Car
+} from "lucide-react";
+import MotionReveal from "../components/motion/MotionReveal";
+
+const categories = [
+  { id: "personal", label: "Personal Banking" },
+  { id: "loans", label: "Loans & Credit" },
+  { id: "investments", label: "Investments" },
+  { id: "business", label: "Business Banking" },
+  { id: "insurance", label: "Insurance" },
+  { id: "digital", label: "Digital Services" },
+];
+
+const services: Record<string, Array<{
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  features: string[];
+  badge?: string;
+  color: string;
+  bg: string;
+}>> = {
+  personal: [
+    {
+      icon: PiggyBank,
+      title: "Savings Account",
+      description: "Earn up to 7% interest with our premium savings accounts. Zero minimum balance for digital accounts.",
+      features: ["Up to 7% interest p.a.", "Zero minimum balance", "Free debit card", "Instant account opening"],
+      badge: "Most Popular",
+      color: "text-lavender-700",
+      bg: "bg-lavender-50",
+    },
+    {
+      icon: CreditCard,
+      title: "Credit Cards",
+      description: "Premium credit cards with cashback, travel rewards, and exclusive lifestyle benefits.",
+      features: ["Up to 5% cashback", "Airport lounge access", "Zero forex markup", "EMI on all purchases"],
+      color: "text-blue-700",
+      bg: "bg-blue-50",
+    },
+    {
+      icon: Landmark,
+      title: "Fixed Deposits",
+      description: "Secure your savings with guaranteed returns. Flexible tenures from 7 days to 10 years.",
+      features: ["Up to 8.5% interest", "Flexible tenures", "Auto-renewal option", "Loan against FD"],
+      badge: "High Returns",
+      color: "text-emerald-700",
+      bg: "bg-emerald-50",
+    },
+  ],
+  loans: [
+    {
+      icon: Home,
+      title: "Home Loans",
+      description: "Make your dream home a reality with competitive interest rates and flexible repayment options.",
+      features: ["From 8.5% p.a.", "Up to ₹5 Cr loan", "30-year tenure", "Quick approval"],
+      badge: "Best Rate",
+      color: "text-amber-700",
+      bg: "bg-amber-50",
+    },
+    {
+      icon: Car,
+      title: "Vehicle Loans",
+      description: "Drive your dream car with easy financing. New and used vehicle loans available.",
+      features: ["From 9% p.a.", "Up to 100% financing", "7-year tenure", "Doorstep service"],
+      color: "text-red-700",
+      bg: "bg-red-50",
+    },
+    {
+      icon: Briefcase,
+      title: "Personal Loans",
+      description: "Instant personal loans for any need — medical, travel, education, or home renovation.",
+      features: ["From 10.5% p.a.", "Up to ₹25 Lakh", "Instant disbursal", "No collateral"],
+      color: "text-purple-700",
+      bg: "bg-purple-50",
+    },
+  ],
+  investments: [
+    {
+      icon: TrendingUp,
+      title: "Mutual Funds",
+      description: "Invest in curated mutual fund portfolios with AI-powered recommendations.",
+      features: ["1000+ fund options", "SIP from ₹100", "Zero commission", "Expert advisory"],
+      badge: "AI Powered",
+      color: "text-lavender-700",
+      bg: "bg-lavender-50",
+    },
+    {
+      icon: Star,
+      title: "Wealth Management",
+      description: "Dedicated relationship managers for high-net-worth individuals.",
+      features: ["Dedicated RM", "Portfolio review", "Tax planning", "Estate planning"],
+      color: "text-amber-700",
+      bg: "bg-amber-50",
+    },
+  ],
+  business: [
+    {
+      icon: Briefcase,
+      title: "Current Account",
+      description: "Feature-rich current accounts for businesses of all sizes.",
+      features: ["Unlimited transactions", "Bulk payment tools", "GST integration", "Dedicated support"],
+      color: "text-blue-700",
+      bg: "bg-blue-50",
+    },
+    {
+      icon: TrendingUp,
+      title: "Business Loans",
+      description: "Fuel your business growth with flexible financing solutions.",
+      features: ["Up to ₹10 Cr", "Collateral-free options", "Quick disbursal", "Flexible repayment"],
+      badge: "Fast Approval",
+      color: "text-emerald-700",
+      bg: "bg-emerald-50",
+    },
+  ],
+  insurance: [
+    {
+      icon: Shield,
+      title: "Life Insurance",
+      description: "Protect your family's future with comprehensive life insurance plans.",
+      features: ["Term & endowment plans", "Tax benefits u/s 80C", "Critical illness cover", "Online claims"],
+      color: "text-lavender-700",
+      bg: "bg-lavender-50",
+    },
+    {
+      icon: Home,
+      title: "General Insurance",
+      description: "Comprehensive coverage for health, vehicle, home, and travel.",
+      features: ["Health insurance", "Motor insurance", "Home insurance", "Travel insurance"],
+      color: "text-red-700",
+      bg: "bg-red-50",
+    },
+  ],
+  digital: [
+    {
+      icon: Smartphone,
+      title: "NEO Mobile App",
+      description: "Full-featured banking app with AI assistant, voice banking, and smart analytics.",
+      features: ["AI-powered insights", "Voice banking", "UPI payments", "Investment tracking"],
+      badge: "New",
+      color: "text-lavender-700",
+      bg: "bg-lavender-50",
+    },
+    {
+      icon: CreditCard,
+      title: "Net Banking",
+      description: "Comprehensive online banking portal with advanced features.",
+      features: ["Fund transfers", "Bill payments", "Account statements", "Tax documents"],
+      color: "text-blue-700",
+      bg: "bg-blue-50",
+    },
+  ],
+};
 
 export default function ServicesPage() {
-  const lifeStageServices = [
-    {
-      category: 'Student Life',
-      icon: GraduationCap,
-      color: 'text-teal',
-      items: [
-        {
-          title: 'Student Checking Account',
-          description: 'Zero-fee checking designed for students with mobile banking and budgeting tools.',
-          features: ['No monthly fees', 'Free ATM access', 'Mobile check deposit', 'Overdraft protection'],
-        },
-        {
-          title: 'Student Savings Account',
-          description: 'Build your savings habit with competitive interest rates and no minimum balance.',
-          features: ['High interest rates', 'No minimum balance', 'Automatic savings tools', 'Financial education'],
-        },
-        {
-          title: 'Student Loan Guidance',
-          description: 'Expert advice on managing student loans and planning for repayment.',
-          features: ['Loan consolidation options', 'Repayment strategies', 'Refinancing guidance', 'Financial counseling'],
-        },
-      ],
-    },
-    {
-      category: 'First Job',
-      icon: Briefcase,
-      color: 'text-copper',
-      items: [
-        {
-          title: 'Career Starter Package',
-          description: 'Complete banking solution for young professionals starting their careers.',
-          features: ['Premium checking account', 'First credit card', 'Savings account', 'Financial planning tools'],
-        },
-        {
-          title: 'First-Time Homebuyer Program',
-          description: 'Make homeownership a reality with specialized mortgage solutions.',
-          features: ['Low down payment options', 'First-time buyer incentives', 'Pre-approval assistance', 'Closing cost support'],
-        },
-        {
-          title: 'Emergency Fund Builder',
-          description: 'Automated savings program to build your financial safety net.',
-          features: ['Automatic transfers', 'Goal tracking', 'High-yield savings', 'Financial coaching'],
-        },
-      ],
-    },
-    {
-      category: 'Family Planning',
-      icon: Heart,
-      color: 'text-primary',
-      items: [
-        {
-          title: 'Family Savings Account',
-          description: 'Joint accounts and savings tools designed for growing families.',
-          features: ['Joint account options', 'Child savings accounts', 'Education fund planning', 'Family budgeting tools'],
-        },
-        {
-          title: 'Home Mortgage Solutions',
-          description: 'Flexible mortgage options for families looking to buy or refinance.',
-          features: ['Competitive rates', 'Flexible terms', 'Refinancing options', 'Home equity loans'],
-        },
-        {
-          title: 'Family Protection Plans',
-          description: 'Comprehensive insurance and protection for your loved ones.',
-          features: ['Life insurance', 'Disability coverage', 'Health savings accounts', 'Estate planning'],
-        },
-      ],
-    },
-    {
-      category: 'Business Growth',
-      icon: TrendingUp,
-      color: 'text-teal',
-      items: [
-        {
-          title: 'Business Banking Package',
-          description: 'Complete banking solution for entrepreneurs and small businesses.',
-          features: ['Business checking', 'Merchant services', 'Payroll solutions', 'Cash management'],
-        },
-        {
-          title: 'Business Loans & Credit',
-          description: 'Flexible financing options to fuel your business growth.',
-          features: ['Term loans', 'Lines of credit', 'Equipment financing', 'Commercial real estate'],
-        },
-        {
-          title: 'Investment & Expansion',
-          description: 'Strategic financial planning for business growth and expansion.',
-          features: ['Investment advisory', 'Expansion financing', 'Treasury management', 'Risk management'],
-        },
-      ],
-    },
-    {
-      category: 'Retirement',
-      icon: Home,
-      color: 'text-copper',
-      items: [
-        {
-          title: 'Retirement Planning',
-          description: 'Comprehensive retirement planning and income strategies.',
-          features: ['IRA accounts', 'Pension planning', '401(k) rollovers', 'Income strategies'],
-        },
-        {
-          title: 'Wealth Management',
-          description: 'Preserve and grow your wealth with expert portfolio management.',
-          features: ['Portfolio management', 'Asset allocation', 'Tax optimization', 'Legacy planning'],
-        },
-        {
-          title: 'Senior Banking Benefits',
-          description: 'Exclusive banking benefits and services for seniors.',
-          features: ['No-fee accounts', 'Enhanced security', 'Dedicated support', 'Estate services'],
-        },
-      ],
-    },
-  ];
+  const navigate = useNavigate();
+  const [activeCategory, setActiveCategory] = useState("personal");
 
   return (
-    <div className="flex flex-col">
-      {/* Hero Section */}
-      <MotionReveal>
-        <section className="bg-gradient-to-br from-primary/10 via-accent/5 to-background py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <div className="mx-auto max-w-3xl text-center">
-              <h1 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl">
-                Life-Based Banking Services
-              </h1>
-              <p className="text-lg text-muted-foreground md:text-xl">
-                Discover banking solutions tailored to your life stage. From student accounts to retirement planning, we're with you every step of the way.
-              </p>
+    <main className="min-h-screen bg-gradient-to-b from-lavender-50 to-white">
+      {/* Hero */}
+      <section className="py-16 bg-gradient-to-br from-lavender-100 via-white to-lavender-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <MotionReveal>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-lavender-100 border border-lavender-200/60 rounded-full text-xs font-bold text-[#000000] mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-lavender-600 animate-pulse" />
+              Comprehensive Banking Solutions
             </div>
+            <h1 className="font-display text-4xl sm:text-5xl font-bold text-[#000000] mb-4">
+              Our Services
+            </h1>
+            <p className="text-lg text-[#1A1A1A] max-w-2xl mx-auto font-medium">
+              From everyday banking to wealth management — discover financial products designed for every stage of your life.
+            </p>
+          </MotionReveal>
+        </div>
+      </section>
+
+      {/* Category Tabs */}
+      <section className="sticky top-16 z-40 bg-white/95 backdrop-blur-md border-b border-lavender-200/60 shadow-soft">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-1 overflow-x-auto py-3 scrollbar-hide">
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`flex-shrink-0 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${
+                  activeCategory === cat.id
+                    ? "bg-lavender-700 text-white shadow-soft"
+                    : "text-[#1A1A1A] hover:bg-lavender-50 hover:text-[#000000]"
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
           </div>
-        </section>
-      </MotionReveal>
+        </div>
+      </section>
 
-      {/* Services by Life Stage */}
-      <MotionReveal delay={100}>
-        <section className="py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <Tabs defaultValue="Student Life" className="w-full">
-              <TabsList className="mb-12 grid w-full grid-cols-2 lg:grid-cols-5">
-                {lifeStageServices.map((service) => (
-                  <TabsTrigger 
-                    key={service.category} 
-                    value={service.category} 
-                    className="text-sm transition-all duration-base ease-premium md:text-base"
-                  >
-                    <service.icon className="mr-2 h-4 w-4" />
-                    {service.category}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-
-              {lifeStageServices.map((service) => (
-                <TabsContent key={service.category} value={service.category} className="space-y-8">
-                  <div className="mb-8 text-center">
-                    <div className={`mx-auto mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10`}>
-                      <service.icon className={`h-8 w-8 ${service.color}`} />
+      {/* Services Grid */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {(services[activeCategory] || []).map((service, i) => (
+              <MotionReveal key={service.title} delay={i * 100}>
+                <div className="group bg-white rounded-2xl border border-lavender-200/60 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+                  <div className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className={`w-12 h-12 ${service.bg} rounded-xl flex items-center justify-center`}>
+                        <service.icon className={`w-6 h-6 ${service.color}`} />
+                      </div>
+                      {service.badge && (
+                        <span className="px-2 py-1 bg-lavender-100 text-lavender-800 text-[10px] font-bold rounded-full border border-lavender-200/60">
+                          {service.badge}
+                        </span>
+                      )}
                     </div>
-                    <h2 className="text-2xl font-bold">{service.category} Banking Solutions</h2>
+                    <h3 className="font-display font-bold text-lg text-[#000000] mb-2">
+                      {service.title}
+                    </h3>
+                    <p className="text-sm text-[#1A1A1A] leading-relaxed mb-4 font-medium">
+                      {service.description}
+                    </p>
+                    <ul className="space-y-1.5 mb-5">
+                      {service.features.map((feat) => (
+                        <li key={feat} className="flex items-center gap-2 text-xs text-[#1A1A1A] font-medium">
+                          <Check className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                          {feat}
+                        </li>
+                      ))}
+                    </ul>
+                    <button
+                      onClick={() => navigate({ to: "/contact" })}
+                      className="w-full flex items-center justify-center gap-2 py-2.5 bg-lavender-50 border border-lavender-200/60 text-[#000000] rounded-xl text-sm font-bold hover:bg-lavender-700 hover:text-white hover:border-lavender-700 transition-all duration-200"
+                    >
+                      Learn More
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
                   </div>
-
-                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {service.items.map((item, index) => (
-                      <Card key={index} className="border-border/50 premium-card">
-                        <CardHeader>
-                          <CardTitle className="text-xl">{item.title}</CardTitle>
-                          <CardDescription className="text-base">{item.description}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <ul className="space-y-2">
-                            {item.features.map((feature, featureIndex) => (
-                              <li key={featureIndex} className="flex items-start text-sm">
-                                <CheckCircle2 className={`mr-2 mt-0.5 h-4 w-4 flex-shrink-0 ${service.color}`} />
-                                <span>{feature}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </TabsContent>
-              ))}
-            </Tabs>
+                </div>
+              </MotionReveal>
+            ))}
           </div>
-        </section>
-      </MotionReveal>
-
-      {/* Additional Information */}
-      <MotionReveal delay={100}>
-        <section className="bg-muted/30 py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <div className="mx-auto max-w-3xl text-center">
-              <h2 className="mb-6 text-3xl font-bold tracking-tight md:text-4xl">
-                Banking That Evolves With You
-              </h2>
-              <p className="mb-8 text-lg text-muted-foreground">
-                As you transition between life stages, your banking needs change. DSOUZA BANK makes it seamless to upgrade your services, access new products, and receive personalized guidance for your next chapter.
-              </p>
-              <div className="grid gap-6 text-left sm:grid-cols-2">
-                {[
-                  {
-                    title: 'Seamless Transitions',
-                    description: 'Moving to a new life stage? We\'ll help you transition smoothly with personalized recommendations and easy account upgrades.',
-                  },
-                  {
-                    title: 'Expert Guidance',
-                    description: 'Our advisors specialize in life-stage banking and provide personalized guidance for your unique situation.',
-                  },
-                  {
-                    title: 'Digital & In-Person',
-                    description: 'Access services through NEO\'s mobile app or visit our branches for personalized support—your choice.',
-                  },
-                  {
-                    title: 'Comprehensive Support',
-                    description: 'From financial education to wealth management, we provide support at every level of your financial journey.',
-                  },
-                ].map((item, index) => (
-                  <Card key={index} className="border-border/50 premium-card">
-                    <CardContent className="p-6">
-                      <h3 className="mb-2 font-semibold">{item.title}</h3>
-                      <p className="text-sm text-muted-foreground">{item.description}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      </MotionReveal>
-    </div>
+        </div>
+      </section>
+    </main>
   );
 }
