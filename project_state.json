@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "DSOUZA BANK fintech website — adjusting layout to integrate AI Chatbot and Voice Assistant into the top-right header section alongside existing icons (Font Size Toggle, Language Selector, Accessibility). Maintaining premium fintech look with dark typography, glassmorphism chatbot panel, and voice assistant with pulse animation.",
+  "architectural_notes": [
+    "Header icons order (right side): Font Size Toggle → Language Selector → Accessibility → AI Chatbot → Voice Assistant",
+    "AI Chatbot panel uses glassmorphism style with #111111 text; supports English, Hindi, Marathi, Kannada, Tamil",
+    "Voice Assistant uses Royal Indigo glow and pulse animation; integrates with selected language for STT/TTS"
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-restructure-the-top-right-section-of-the-header-component-frontend-src-components-header-tsx-to-display-all-five-controls-in-a-single-horizontal-row-with-16-20px-equal-gaps-vertically-centered-and-consistent-icon-sizing-the-order-must-be-font-size-toggle-language-selector-accessibility-icon-ai-chatbot-voice-assistant-remove-any-existing-standalone-floating-placements-of-the-chatbot-or-voice-assistant-from-the-header-area-and-consolidate-them-here",
+      "title": "Restructure the top-right section of the Header component (frontend/src/components/Header.tsx) to display all five controls in a single horizontal row with 16–20px equal gaps, vertically centered, and consistent icon sizing. The order must be: [ Font Size Toggle ] [ Language Selector ] [ Accessibility Icon ] [ AI Chatbot ] [ Voice Assistant ]. Remove any existing standalone floating placements of the chatbot or voice assistant from the header area and consolidate them here.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-or-update-an-inline-ai-chatbot-trigger-button-in-the-header-labeled-dsouza-ai-with-a-small-chat-bot-icon-and-the-text-label-beneath-or-beside-it-when-clicked-open-a-slide-down-or-side-panel-using-glassmorphism-styling-frosted-glass-background-subtle-border-backdrop-blur-the-panel-must-use-deep-black-readable-text-111111-support-language-selection-among-english-hindi-marathi-kannada-and-tamil-include-an-adjustable-font-size-control-inside-the-panel-and-include-a-senior-mode-toggle-that-enlarges-text-and-increases-contrast-within-the-panel-the-panel-must-close-when-the-trigger-is-clicked-again-or-when-clicking-outside",
+      "title": "Add or update an inline AI Chatbot trigger button in the header labeled 'DSOUZA AI' with a small chat/bot icon and the text label beneath or beside it. When clicked, open a slide-down or side panel using glassmorphism styling (frosted glass background, subtle border, backdrop blur). The panel must use deep black readable text (#111111), support language selection among English, Hindi, Marathi, Kannada, and Tamil, include an adjustable font size control inside the panel, and include a Senior Mode toggle that enlarges text and increases contrast within the panel. The panel must close when the trigger is clicked again or when clicking outside.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-or-update-an-inline-voice-assistant-trigger-button-in-the-header-showing-a-microphone-icon-with-the-label-voice-the-button-must-display-a-subtle-royal-indigo-4b0082-or-equivalent-glow-when-the-voice-assistant-is-active-listening-apply-a-visible-pulse-animation-to-the-microphone-icon-clicking-the-button-opens-a-compact-dropdown-for-voice-interaction-that-supports-speech-to-text-capturing-user-speech-and-text-to-speech-reading-responses-aloud-using-the-web-speech-api-operating-in-the-currently-selected-app-language",
+      "title": "Add or update an inline Voice Assistant trigger button in the header showing a microphone icon with the label 'Voice'. The button must display a subtle Royal Indigo (#4B0082 or equivalent) glow. When the voice assistant is active (listening), apply a visible pulse animation to the microphone icon. Clicking the button opens a compact dropdown for voice interaction that supports speech-to-text (capturing user speech) and text-to-speech (reading responses aloud) using the Web Speech API, operating in the currently selected app language.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-visual-refinements-across-the-header-and-both-new-panels-ensure-all-heading-text-is-000000-all-body-text-is-111111-no-faded-grey-text-add-subtle-hover-animations-e-g-scale-or-opacity-transition-to-all-five-header-controls-and-maintain-a-premium-fintech-aesthetic-with-breathing-space-between-elements-so-the-header-does-not-appear-crowded",
+      "title": "Apply visual refinements across the header and both new panels: ensure all heading text is #000000, all body text is #111111 (no faded grey text), add subtle hover animations (e.g., scale or opacity transition) to all five header controls, and maintain a premium fintech aesthetic with breathing space between elements so the header does not appear crowded.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Place AI Chatbot ('DSOUZA AI') in top-right header with glassmorphism panel, multi-language support, adjustable font size, and Senior Mode toggle",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Place Voice Assistant in top-right header with microphone icon, Royal Indigo glow, pulse animation when active, speech-to-text and text-to-speech support",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Header layout: horizontal alignment [ Font Size ] [ Language ] [ Accessibility ] [ AI Chatbot ] [ Voice Assistant ] with 16-20px equal spacing, vertically centered, consistent icon size",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Visual refinement: dark typography (#000000 headings, #111111 body), subtle hover animations, premium fintech look, no faded grey text",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "DSOUZA BANK",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

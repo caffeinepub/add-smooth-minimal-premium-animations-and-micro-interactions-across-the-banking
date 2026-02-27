@@ -1,0 +1,92 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-27T15:53:05.338Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 4,
+    "implemented": 4,
+    "items": [
+      {
+        "id": "REQ-1",
+        "summary": "Restructure the top-right section of the Header component (frontend/src/components/Header.tsx) to display all five controls in a single horizontal row with 16–20px equal gaps, vertically centered, and consistent icon sizing. The order must be: [ Font Size Toggle ] [ Language Selector ] [ Accessibility Icon ] [ AI Chatbot ] [ Voice Assistant ]. Remove any existing standalone floating placements of the chatbot or voice assistant from the header area and consolidate them here.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/Header.tsx",
+          "frontend/src/components/FloatingChatbot.tsx",
+          "frontend/src/components/Layout.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/Header.tsx",
+          "frontend/src/components/FloatingChatbot.tsx",
+          "frontend/src/components/Layout.tsx"
+        ]
+      },
+      {
+        "id": "REQ-2",
+        "summary": "Add or update an inline AI Chatbot trigger button in the header labeled 'DSOUZA AI' with a small chat/bot icon and the text label beneath or beside it. When clicked, open a slide-down or side panel using glassmorphism styling (frosted glass background, subtle border, backdrop blur). The panel must use deep black readable text (#111111), support language selection among English, Hindi, Marathi, Kannada, and Tamil, include an adjustable font size control inside the panel, and include a Senior Mode toggle that enlarges text and increases contrast within the panel. The panel must close when the trigger is clicked again or when clicking outside.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/ChatbotPanel.tsx",
+          "frontend/src/components/Header.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/ChatbotPanel.tsx",
+          "frontend/src/components/Header.tsx"
+        ]
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Add or update an inline Voice Assistant trigger button in the header showing a microphone icon with the label 'Voice'. The button must display a subtle Royal Indigo (#4B0082 or equivalent) glow. When the voice assistant is active (listening), apply a visible pulse animation to the microphone icon. Clicking the button opens a compact dropdown for voice interaction that supports speech-to-text (capturing user speech) and text-to-speech (reading responses aloud) using the Web Speech API, operating in the currently selected app language.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/VoiceAssistantDropdown.tsx",
+          "frontend/src/components/Header.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/VoiceAssistantDropdown.tsx",
+          "frontend/src/components/Header.tsx"
+        ]
+      },
+      {
+        "id": "REQ-4",
+        "summary": "Apply visual refinements across the header and both new panels: ensure all heading text is #000000, all body text is #111111 (no faded grey text), add subtle hover animations (e.g., scale or opacity transition) to all five header controls, and maintain a premium fintech aesthetic with breathing space between elements so the header does not appear crowded.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/Header.tsx",
+          "frontend/src/components/ChatbotPanel.tsx",
+          "frontend/src/components/VoiceAssistantDropdown.tsx",
+          "frontend/src/index.css"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/Header.tsx",
+          "frontend/src/components/ChatbotPanel.tsx",
+          "frontend/src/components/VoiceAssistantDropdown.tsx",
+          "frontend/src/index.css"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/src/components/ChatbotDialog.tsx",
+    "frontend/src/components/ChatbotPanel.tsx",
+    "frontend/src/components/FloatingChatbot.tsx",
+    "frontend/src/components/Header.tsx",
+    "frontend/src/components/Layout.tsx",
+    "frontend/src/components/VoiceAssistant.tsx",
+    "frontend/src/components/VoiceAssistantDropdown.tsx",
+    "frontend/src/index.css",
+    "frontend/src/lib/speechTypes.ts",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

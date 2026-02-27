@@ -1,0 +1,117 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Integrate AI Chatbot and Voice Assistant into DSOUZA BANK Header",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Restructure the Header component's top-right section to display all five controls (Font Size Toggle, Language Selector, Accessibility Icon, AI Chatbot, Voice Assistant) in a single horizontal row with equal 16–20px gaps, consistent icon sizing, and vertical centering. Remove any standalone floating placements.",
+      "acceptanceCriteria": [
+        "All five controls appear in the correct left-to-right order in the header's right section",
+        "Gaps between every adjacent control are equal (16–20px)",
+        "All icons and labels are vertically centered within the header bar",
+        "Icons are the same visual size across all five controls",
+        "No duplicate or floating instances of the chatbot or voice assistant exist outside the header"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Restructure the top-right section to display all five controls (Font Size Toggle, Language Selector, Accessibility Icon, AI Chatbot trigger button, Voice Assistant trigger button) in a single horizontal flex row with equal 16–20px gaps between each control. Ensure all icons are vertically centered and have consistent sizing. Import and integrate inline trigger buttons for the AI Chatbot and Voice Assistant (replacing any previous floating implementations). Remove or consolidate any duplicate chatbot/voice assistant button placements elsewhere in the header."
+        },
+        {
+          "path": "frontend/src/components/FloatingChatbot.tsx",
+          "operation": "modify",
+          "description": "Remove or comment out the fixed floating action button rendering. The chatbot trigger will now be integrated directly into the Header component as an inline control. Preserve the ChatbotDialog component logic for reuse in the new header-integrated implementation."
+        },
+        {
+          "path": "frontend/src/components/Layout.tsx",
+          "operation": "modify",
+          "description": "Remove the FloatingChatbot component from the layout composition since the chatbot trigger is now integrated into the Header. Ensure the emergency security button and other layout elements remain intact."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Add an inline AI Chatbot trigger button in the header labeled 'DSOUZA AI' with a chat/bot icon. Clicking it opens a glassmorphism-styled slide-down or side panel with deep black text (#111111), multi-language support (English, Hindi, Marathi, Kannada, Tamil), adjustable font size control, and a Senior Mode toggle. The panel must close when clicked again or when clicking outside.",
+      "acceptanceCriteria": [
+        "Header shows a chat/bot icon with label 'DSOUZA AI'",
+        "Clicking the button opens a glassmorphism-styled panel (backdrop-blur, frosted glass appearance)",
+        "All text inside the panel renders in #111111",
+        "Panel includes a language selector with English, Hindi, Marathi, Kannada, and Tamil options",
+        "Panel includes a font size adjustment control that resizes text within the panel",
+        "Panel includes a Senior Mode toggle that visibly increases font size and contrast when enabled",
+        "Clicking the trigger again or clicking outside the panel closes it"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/ChatbotPanel.tsx",
+          "operation": "create",
+          "description": "Create a new ChatbotPanel component that renders a slide-down or side panel with glassmorphism styling (backdrop-blur, frosted glass background with subtle border). The panel must display deep black text (#111111) and include: (1) a language selector dropdown for English, Hindi, Marathi, Kannada, and Tamil; (2) a font size adjustment control (small/medium/large buttons or slider) that dynamically resizes text within the panel; (3) a Senior Mode toggle that increases font size and contrast when enabled; (4) the core chatbot conversation interface reusing logic from ChatbotDialog. The panel must accept open/close state props and support closing when clicking outside (using a click-away listener or backdrop). Reference the generated chatbot icon at frontend/public/assets/generated/chatbot-icon-transparent.dim_64x64.png for consistency. Verify any component usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Add an inline AI Chatbot trigger button in the top-right controls row with a chat/bot icon and the label 'DSOUZA AI'. Manage the open/closed state of the ChatbotPanel component. Wire the trigger button click to toggle the panel's visibility. Ensure the panel closes when the trigger is clicked again or when the user clicks outside the panel (handled by the ChatbotPanel component). Position the panel relative to the header (e.g., slide down from the header or appear as a side panel anchored to the trigger)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Add an inline Voice Assistant trigger button in the header with a microphone icon labeled 'Voice', displaying a subtle Royal Indigo (#4B0082) glow. When listening, show a visible pulse animation on the icon. Clicking opens a compact dropdown supporting speech-to-text and text-to-speech using the Web Speech API in the currently selected app language.",
+      "acceptanceCriteria": [
+        "Header shows a microphone icon with the label 'Voice'",
+        "Button has a subtle Royal Indigo glow effect in its default state",
+        "When listening, the microphone icon shows a visible CSS pulse animation",
+        "Clicking the button opens a compact dropdown panel for voice interaction",
+        "The component uses the Web Speech API for speech recognition and synthesis",
+        "Voice operations respect the currently selected app language"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/VoiceAssistantDropdown.tsx",
+          "operation": "create",
+          "description": "Create a new VoiceAssistantDropdown component that renders a compact dropdown panel for voice interaction. Integrate the Web Speech API for speech-to-text (speech recognition) and text-to-speech (speech synthesis) using logic adapted from the existing VoiceAssistant component. The dropdown must respect the currently selected app language from LanguageContext. Display a visual indicator when listening (e.g., waveform or status text). Accept open/close state props and support closing when clicking outside or after completing a voice command. Verify any component usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Add an inline Voice Assistant trigger button in the top-right controls row with a microphone icon and the label 'Voice'. Apply a subtle Royal Indigo (#4B0082) glow effect using CSS (e.g., box-shadow or filter). When the voice assistant is active/listening, apply a visible CSS pulse animation to the microphone icon. Manage the open/closed state of the VoiceAssistantDropdown component. Wire the trigger button click to toggle the dropdown's visibility. Position the dropdown relative to the header (e.g., below the trigger button)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Apply visual refinements across the header and both new panels: ensure all heading text is #000000, all body text is #111111 (no faded grey), add subtle hover animations (scale or opacity transition) to all five header controls, and maintain premium fintech aesthetic with breathing space.",
+      "acceptanceCriteria": [
+        "All heading text in the header and panels is #000000",
+        "All body/label text in the header and panels is #111111 with no faded grey",
+        "Each of the five header controls has a subtle hover animation (scale or opacity transition)",
+        "Header maintains breathing space and does not appear visually crowded at standard viewport widths",
+        "Overall header retains a premium, minimal fintech appearance"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Add subtle hover animations (scale or opacity transition) to all five header controls (Font Size Toggle, Language Selector, Accessibility Icon, AI Chatbot trigger, Voice Assistant trigger). Ensure all heading text in the header is #000000 and all body/label text is #111111 with no faded grey tones. Adjust spacing and layout to maintain breathing space between elements so the header does not appear crowded at standard viewport widths. Preserve the premium fintech aesthetic with clean, minimal styling."
+        },
+        {
+          "path": "frontend/src/components/ChatbotPanel.tsx",
+          "operation": "modify",
+          "description": "Ensure all heading text within the ChatbotPanel is #000000 and all body text is #111111 (no faded grey). Apply consistent typography that aligns with the premium fintech aesthetic. Maintain adequate padding and spacing within the panel to avoid visual crowding."
+        },
+        {
+          "path": "frontend/src/components/VoiceAssistantDropdown.tsx",
+          "operation": "modify",
+          "description": "Ensure all heading text within the VoiceAssistantDropdown is #000000 and all body text is #111111 (no faded grey). Apply consistent typography that aligns with the premium fintech aesthetic. Maintain adequate padding and spacing within the dropdown to avoid visual crowding."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Add or update CSS utility classes for glassmorphism styling (backdrop-blur, frosted glass background with subtle border) to support the ChatbotPanel. Add or update CSS keyframes for the Royal Indigo glow effect and microphone pulse animation to support the Voice Assistant trigger button. Ensure all new styles align with the existing premium fintech design system and color tokens."
+        }
+      ]
+    }
+  ]
+}

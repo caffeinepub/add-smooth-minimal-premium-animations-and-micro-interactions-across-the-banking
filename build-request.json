@@ -1,0 +1,126 @@
+{
+  "kind": "build_request",
+  "title": "Integrate AI Chatbot and Voice Assistant into DSOUZA BANK Header",
+  "projectName": "DSOUZA BANK",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Restructure the top-right section of the Header component (frontend/src/components/Header.tsx) to display all five controls in a single horizontal row with 16–20px equal gaps, vertically centered, and consistent icon sizing. The order must be: [ Font Size Toggle ] [ Language Selector ] [ Accessibility Icon ] [ AI Chatbot ] [ Voice Assistant ]. Remove any existing standalone floating placements of the chatbot or voice assistant from the header area and consolidate them here.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Place BOTH AI Chatbot and Voice Assistant inside the top-right header section, beside the existing icons",
+          "ORDER (Right side header layout): [ Font Size ] [ Language ] [ Accessibility ] [ AI Chatbot ] [ Voice Assistant ]",
+          "Maintain equal spacing (16–20px gap between icons)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All five controls appear in the correct left-to-right order in the header's right section",
+        "Gaps between every adjacent control are equal (16–20px)",
+        "All icons and labels are vertically centered within the header bar",
+        "Icons are the same visual size across all five controls",
+        "No duplicate or floating instances of the chatbot or voice assistant exist outside the header"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Add or update an inline AI Chatbot trigger button in the header labeled 'DSOUZA AI' with a small chat/bot icon and the text label beneath or beside it. When clicked, open a slide-down or side panel using glassmorphism styling (frosted glass background, subtle border, backdrop blur). The panel must use deep black readable text (#111111), support language selection among English, Hindi, Marathi, Kannada, and Tamil, include an adjustable font size control inside the panel, and include a Senior Mode toggle that enlarges text and increases contrast within the panel. The panel must close when the trigger is clicked again or when clicking outside.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Icon + small label: 'DSOUZA AI'",
+          "When clicked: Slide-down or side panel opens",
+          "Glassmorphism style panel",
+          "Deep black readable text (#111111)",
+          "Multi-language support (English, Hindi, Marathi, Kannada, Tamil)",
+          "Adjustable font size inside chatbot",
+          "Senior Mode toggle"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Header shows a chat/bot icon with label 'DSOUZA AI'",
+        "Clicking the button opens a glassmorphism-styled panel (backdrop-blur, frosted glass appearance)",
+        "All text inside the panel renders in #111111",
+        "Panel includes a language selector with English, Hindi, Marathi, Kannada, and Tamil options",
+        "Panel includes a font size adjustment control that resizes text within the panel",
+        "Panel includes a Senior Mode toggle that visibly increases font size and contrast when enabled",
+        "Clicking the trigger again or clicking outside the panel closes it"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Add or update an inline Voice Assistant trigger button in the header showing a microphone icon with the label 'Voice'. The button must display a subtle Royal Indigo (#4B0082 or equivalent) glow. When the voice assistant is active (listening), apply a visible pulse animation to the microphone icon. Clicking the button opens a compact dropdown for voice interaction that supports speech-to-text (capturing user speech) and text-to-speech (reading responses aloud) using the Web Speech API, operating in the currently selected app language.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Microphone icon beside chatbot",
+          "Label: 'Voice'",
+          "Subtle Royal Indigo glow",
+          "Pulse animation when active",
+          "Opens compact voice interaction dropdown",
+          "Supports speech-to-text and text-to-speech",
+          "Works in selected language"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Header shows a microphone icon with the label 'Voice'",
+        "Button has a subtle Royal Indigo glow effect in its default state",
+        "When listening, the microphone icon shows a visible CSS pulse animation",
+        "Clicking the button opens a compact dropdown panel for voice interaction",
+        "The component uses the Web Speech API for speech recognition and synthesis",
+        "Voice operations respect the currently selected app language"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Apply visual refinements across the header and both new panels: ensure all heading text is #000000, all body text is #111111 (no faded grey text), add subtle hover animations (e.g., scale or opacity transition) to all five header controls, and maintain a premium fintech aesthetic with breathing space between elements so the header does not appear crowded.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Keep typography dark (#000000 headings, #111111 body)",
+          "No faded grey text",
+          "Maintain premium fintech look",
+          "Ensure header does not look crowded",
+          "Maintain breathing space",
+          "Icons should be clean and minimal",
+          "Add subtle hover animation"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All heading text in the header and panels is #000000",
+        "All body/label text in the header and panels is #111111 with no faded grey",
+        "Each of the five header controls has a subtle hover animation (scale or opacity transition)",
+        "Header maintains breathing space and does not appear visually crowded at standard viewport widths",
+        "Overall header retains a premium, minimal fintech appearance"
+      ]
+    }
+  ],
+  "constraints": [
+    "Do NOT redesign or restructure the overall page layout — only adjust header placement and presentation",
+    "Do not modify files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui",
+    "Preserve all existing header functionality (navigation links, scroll-aware styling, mobile menu toggle, life stage toggle)"
+  ],
+  "nonGoals": [
+    "Redesigning any page sections outside the header",
+    "Adding a backend for chatbot responses (use frontend-only mock/static responses)",
+    "Replacing or removing the existing FloatingChatbot or VoiceAssistant component logic — integrate or adapt it into the header",
+    "Changing the overall color theme or brand identity of DSOUZA BANK"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}
